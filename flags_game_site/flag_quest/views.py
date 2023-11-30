@@ -1,4 +1,5 @@
 from django.views.generic import ListView, TemplateView
+from django.views.generic.edit import FormView
 from django.shortcuts import render, redirect
 
 from flag_quest.forms import FlagForm
@@ -36,40 +37,34 @@ class ResultsCountries(ListView):
             return redirect('results')
 
 
-class GamePage(ListView):
+def options_generator(question):
+    return [
+        (option[0], option[0]) for option in question["options"]
+    ]
+
+
+def correct_answer_generator(question):
+    options = question['options']
+    correct_answer = ''
+    for option in options:
+        if option[1] == 'correct':
+            correct_answer = option[0]
+            break
+
+    return correct_answer
+
+
+class GamePage(FormView):
     model = CountryInfo
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
-    form = None
-    question = None
-    correct_answer = None
+    question = context_generator("flag", "country")
+    form_class = FlagForm(options=options_generator(question))
+    correct_answer = correct_answer_generator(question)
 
-    def get(self, request, **kwargs):
-
-        self.question = context_generator("flag", "country")
-        self.form = FlagForm(options=self.options_generator())
-        self.correct_answer = self.correct_answer_generator()
-
-        return render(
-            request,
-            self.template_name,
-            {"question": self.question, "form": self.form},
-        )
-
-    def correct_answer_generator(self):
-        options = self.question['options']
-        correct_answer = ''
-        for option in options:
-            if option[1] == 'correct':
-                correct_answer = option[0]
-                break
-
-        return correct_answer
-
-    def options_generator(self):
-        return [
-            (option[0], option[0]) for option in self.question["options"]
-        ]
+    def get_context_data(self, **kwargs):
+        context = {"question": self.question, "form": self.form_class}
+        return context
 
     def post(self, request):
         if "check" in request.POST:
