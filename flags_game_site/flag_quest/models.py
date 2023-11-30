@@ -5,6 +5,18 @@ from django.db import models
 class CountryInfo(models.Model):
     name = models.CharField(max_length=200)
     flag_picture = models.CharField(max_length=500)
+    capital = models.CharField(max_length=200, null=True)
+    continent = models.CharField(max_length=200, null=True)
 
     def __str(self):
         return self.name
+
+
+class Answer(models.Model):
+    flag_picture = models.CharField(max_length=500)
+    is_correct = models.BooleanField(default=False)
+    your_answer = models.CharField(max_length=500)
+    correct_answer = models.CharField(max_length=500)
+
+    def __str(self):
+        return f"{self.your_answer}"

@@ -17,22 +17,27 @@
 </head>
 <body>
     <div class="container">
-        <table class="table table-bordered">
+        <h2>Correct responses are ...</h2>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="clean" class="btn btn-primary">Clean DB</button>
+        </form>
+            <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Country</th>
-                    <th>Capital City</th>
-                    <th>Continent</th>
+                    <th>Answer</th>
                     <th>Flag</th>
+                    <th>Is correct reply</th>
+                    <th>Correct answer</th>
                 </tr>
             </thead>
             <tbody>
-                {% for country in countries %}
+                {% for result in results %}
                 <tr>
-                    <td>{{ country.name }}</td>
-                    <td>{{ country.capital }}</td>
-                    <td>{{ country.continent }}</td>
-                    <td><img src="{{ country.flag_picture }}" alt="{{ country.name }} Flag" class="flag-img"></td>
+                    <td>{{ result.your_answer }}</td>
+                    <td><img src="{{ result.flag_picture }}" alt="{{ result.name }} Flag" class="flag-img"></td>
+                    <td>{{ result.is_correct }}</td>
+                    <td>{{ result.correct_answer }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
