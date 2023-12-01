@@ -7,7 +7,8 @@ from flag_quest.models import CountryInfo, Answer
 from flag_quest.additional_function import (
     context_generator,
     options_generator,
-    save_reply_of_user
+    save_reply_of_user,
+    total_result_calculator
 )
 
 
@@ -29,6 +30,7 @@ class ResultsCountries(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['total_result'] = total_result_calculator()
         return context
 
     def post(self, request):

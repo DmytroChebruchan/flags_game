@@ -84,7 +84,7 @@ def country_by_flag(flag_picture):
 
 
 def save_reply_of_user(returned_request):
-    your_answer = returned_request['options_chosen']
+    your_answer = returned_request['option_chosen']
     correct_answer = country_by_flag(returned_request['flag_picture'])
 
     answer = Answer(flag_picture=returned_request['flag_picture'],
@@ -92,3 +92,10 @@ def save_reply_of_user(returned_request):
                     correct_answer=correct_answer,
                     is_correct=True if correct_answer == your_answer else False)
     answer.save()
+
+
+def total_result_calculator():
+    answers = Answer.objects.all().count()
+    correct_answers = Answer.objects.filter(is_correct=True).count()
+    result = (correct_answers, answers)
+    return result
