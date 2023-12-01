@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Bootstrap Table Example</title>
+    <title>Results</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -16,7 +16,6 @@
     </style>
 </head>
 <body>
-    <p><a href="/">Main Menu</a></p>
     <div class="container">
         {% include 'nav_bar.html' %}
         <h2>Correct responses are {{ total_result.0 }}/{{ total_result.1 }}.</h2>
