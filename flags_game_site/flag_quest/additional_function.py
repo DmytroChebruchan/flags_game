@@ -1,7 +1,18 @@
 import random
 from random import choice
-from flag_quest.models import CountryInfo
+from flag_quest.models import CountryInfo, Answer
+from django.core.exceptions import ObjectDoesNotExist
 
+
+def correct_answer_generator(question: object) -> object:
+    options = question['options']
+    correct_answer = ''
+    for option in options:
+        if option[1] == 'correct':
+            correct_answer = option[0]
+            break
+
+    return correct_answer
 
 def countries_generator(continent: str = None):
     all_countries = CountryInfo.objects.all()
@@ -15,6 +26,12 @@ def countries_generator(continent: str = None):
 
 def get_shuffled_list(input_list):
     return random.sample(input_list, len(input_list))
+
+
+def options_generator(question):
+    return [
+        (option[0], option[0]) for option in question["options"]
+    ]
 
 
 def adding_correct_answers(context):
@@ -56,3 +73,22 @@ def context_generator(required_param, options_type):
 
     context = {"question": question, "options": get_shuffled_list(options)}
     return context
+
+
+def country_by_flag(flag_picture):
+    try:
+        country = CountryInfo.objects.get(flag_picture=flag_picture)
+        return country.name
+    except ObjectDoesNotExist:
+        return "Country not found"  # Modify this message according to your requirements
+
+
+def save_reply_of_user(returned_request):
+    your_answer = returned_request['options_chosen']
+    correct_answer = country_by_flag(returned_request['flag_picture'])
+
+    answer = Answer(flag_picture=returned_request['flag_picture'],
+                    your_answer=your_answer,
+                    correct_answer=correct_answer,
+                    is_correct=True if correct_answer == your_answer else False)
+    answer.save()

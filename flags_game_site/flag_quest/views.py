@@ -6,7 +6,8 @@ from flag_quest.forms import FlagForm
 from flag_quest.models import CountryInfo, Answer
 from flag_quest.additional_function import (
     context_generator,
-    adding_correct_answers,
+    options_generator,
+    save_reply_of_user
 )
 
 
@@ -28,7 +29,6 @@ class ResultsCountries(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        adding_correct_answers(context)
         return context
 
     def post(self, request):
@@ -37,42 +37,24 @@ class ResultsCountries(ListView):
             return redirect('results')
 
 
-def options_generator(question):
-    return [
-        (option[0], option[0]) for option in question["options"]
-    ]
-
-
-def correct_answer_generator(question):
-    options = question['options']
-    correct_answer = ''
-    for option in options:
-        if option[1] == 'correct':
-            correct_answer = option[0]
-            break
-
-    return correct_answer
-
-
 class GamePage(FormView):
     model = CountryInfo
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
-    question = context_generator("flag", "country")
-    form_class = FlagForm(options=options_generator(question))
-    correct_answer = correct_answer_generator(question)
+    question = None
+    form_class = None
+    correct_answer = None
+    success_url = "/"
 
     def get_context_data(self, **kwargs):
+        self.question = context_generator("flag", "country")
+        self.form_class = FlagForm(options=options_generator(self.question))
+
         context = {"question": self.question, "form": self.form_class}
         return context
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         if "check" in request.POST:
+            returned_request = request.POST
+            save_reply_of_user(returned_request)
             return redirect("game")
-
-        elif "next" in request.POST:
-            return render(
-                request,
-                self.template_name,
-                {"question": self.question, "form": self.form},
-            )
