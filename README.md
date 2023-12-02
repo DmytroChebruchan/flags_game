@@ -2,7 +2,7 @@
 Game to learn the flags.
 [![Maintainability](https://api.codeclimate.
 com/v1/badges/54b91ece1062d51d180e/maintainability)](https://codeclimate.
-com/github/DmitriyChebruchan/flags_game/maintainability)
+com/github/DmitriyChebruchan/flags_game/maintainability)]
 # Django Project Repository
 
 This repository contains a Django project.
