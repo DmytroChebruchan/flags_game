@@ -22,4 +22,6 @@ Clone this repository and run the project using the following commands:
 https://github.com/DmitriyChebruchan/flags_game
 pip install -r requirements.txt
 cd flags_game_site
+python manage.py makemigrations
+python manage.py migrate
 python manage.py runserver
