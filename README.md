@@ -15,13 +15,44 @@ Before running the project, ensure you have the following installed:
 - Git
 
 ## Clone the Repository
+<ol>
+<li>Clone this repository and run the project using the following 
+commands:
 
-Clone this repository and run the project using the following commands:
+```
+git clone https://github.com/DmitriyChebruchan/flags_game
+```
+</li>
+<li>Navigate to the project directory:
 
-```bash
-https://github.com/DmitriyChebruchan/flags_game
+```
+cd flags_game
+```
+</li>
+<li>Install dependencies
+
+```
 pip install -r requirements.txt
+```
+</li>
+<li>Navigate to Django project folder
+
+```
 cd flags_game_site
+```
+</li>
+
+<li>Make migrations and migrate
+
+```
 python manage.py makemigrations
 python manage.py migrate
+```
+</li>
+<li>Run server
+
+```
 python manage.py runserver
+```
+</li>
+</ol>
