@@ -38,12 +38,12 @@ def adding_correct_answers(context):
     answers_context = context["object_list"]
     flags = [answer.flag_picture for answer in answers_context]
 
-    correct_countries = {}
-    countries = CountryInfo.objects.all()
-    for country in countries:
-        if country.flag_picture in flags:
-            correct_countries[country.flag_picture] = country.name
+    correct_countries = collect_correct_countries(flags)
 
+    correct_answers_handler(answers_context, correct_countries)
+
+
+def correct_answers_handler(answers_context, correct_countries):
     total_correct_answers = 0
     for answer in answers_context:
         if answer.your_answer == correct_countries[answer.flag_picture]:
@@ -52,6 +52,15 @@ def adding_correct_answers(context):
         else:
             answer.correct_answer = correct_countries[answer.flag_picture]
         answer.save()
+
+
+def collect_correct_countries(flags):
+    correct_countries = {}
+    countries = CountryInfo.objects.all()
+    for country in countries:
+        if country.flag_picture in flags:
+            correct_countries[country.flag_picture] = country.name
+    return correct_countries
 
 
 def context_generator(required_param, options_type):
