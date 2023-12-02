@@ -1,6 +1,6 @@
 # flags_game
 Game to learn the flags.
-[![Maintainability](https://api.codeclimate.com/v1/badges/54b91ece1062d51d180e/maintainability)](https://codeclimate.com/github/DmitriyChebruchan/flags_game/maintainability)]
+[![Maintainability](https://api.codeclimate.com/v1/badges/274825b772874511e9d8/maintainability)](https://codeclimate.com/github/DmitriyChebruchan/flags_game/maintainability)
 
 # Django Project Repository
 
