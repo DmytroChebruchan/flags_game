@@ -21,7 +21,8 @@
         <h2>Correct responses are {{ total_result.0 }}/{{ total_result.1 }}.</h2>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" name="clean" class="btn btn-primary">Clean DB</button>
+            <button type="submit" name="clean" class="btn btn-danger">Clean
+                results</button>
             <p></p>
         </form>
             <table class="table table-bordered">
