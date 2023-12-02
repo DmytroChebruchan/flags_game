@@ -1,6 +1,7 @@
-# flags_game
-Game to learn the flags.
+# Flags game
 [![Maintainability](https://api.codeclimate.com/v1/badges/274825b772874511e9d8/maintainability)](https://codeclimate.com/github/DmitriyChebruchan/flags_game/maintainability)
+
+Game to check if you know flags of different countries.
 
 # Django Project Repository
 
@@ -14,7 +15,7 @@ Before running the project, ensure you have the following installed:
 - Django
 - Git
 
-## Clone the Repository
+## Detailed installation process
 <ol>
 <li>Clone this repository and run the project using the following 
 commands:
