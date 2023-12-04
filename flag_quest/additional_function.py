@@ -3,18 +3,8 @@ from random import choice
 
 from django.core.exceptions import ObjectDoesNotExist
 
+from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, CountryInfo
-
-
-def correct_answer_generator(question: object) -> object:
-    options = question["options"]
-    correct_answer = ""
-    for option in options:
-        if option[1] == "correct":
-            correct_answer = option[0]
-            break
-
-    return correct_answer
 
 
 def countries_generator(continent: str = None):
@@ -33,26 +23,6 @@ def get_shuffled_list(input_list):
 
 def options_generator(question):
     return [(option[0], option[0]) for option in question["options"]]
-
-
-def adding_correct_answers(context):
-    answers_context = context["object_list"]
-    flags = [answer.flag_picture for answer in answers_context]
-
-    correct_countries = collect_correct_countries(flags)
-
-    correct_answers_handler(answers_context, correct_countries)
-
-
-def correct_answers_handler(answers_context, correct_countries):
-    total_correct_answers = 0
-    for answer in answers_context:
-        if answer.your_answer == correct_countries[answer.flag_picture]:
-            answer.is_correct = True
-            total_correct_answers = total_correct_answers + 1
-        else:
-            answer.correct_answer = correct_countries[answer.flag_picture]
-        answer.save()
 
 
 def collect_correct_countries(flags):
@@ -80,6 +50,7 @@ def context_generator(required_param, options_type):
 
     options = [(correct_answer, "correct")]
     options.extend((country.name, "wrong") for country in countries[1:])
+    # options.append(('I do not know', "idk"))
 
     context = {"question": question, "options": get_shuffled_list(options)}
     return context
@@ -94,16 +65,8 @@ def country_by_flag(flag_picture):
 
 
 def save_reply_of_user(returned_request):
-    your_answer = returned_request["option_chosen"]
-    correct_answer = country_by_flag(returned_request["flag_picture"])
-
-    answer = Answer(
-        flag_picture=returned_request["flag_picture"],
-        your_answer=your_answer,
-        correct_answer=correct_answer,
-        is_correct=True if correct_answer == your_answer else False,
-    )
-    answer.save()
+    answer = Answer()
+    answer.save_reply(returned_request)
 
 
 def total_result_calculator():
