@@ -6,17 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from flag_quest.models import Answer, CountryInfo
 
 
-def correct_answer_generator(question: object) -> object:
-    options = question["options"]
-    correct_answer = ""
-    for option in options:
-        if option[1] == "correct":
-            correct_answer = option[0]
-            break
-
-    return correct_answer
-
-
 def countries_generator(continent: str = None):
     all_countries = CountryInfo.objects.all()
 
@@ -94,7 +83,7 @@ def country_by_flag(flag_picture):
 
 
 def save_reply_of_user(returned_request):
-    your_answer = returned_request["option_chosen"]
+    your_answer = returned_request["selected_country"]
     correct_answer = country_by_flag(returned_request["flag_picture"])
 
     answer = Answer(

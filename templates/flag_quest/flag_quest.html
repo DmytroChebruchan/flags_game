@@ -22,7 +22,7 @@
 
                 {% for option in form.options %}
                     <input type="radio" class="btn-check"
-                           name="option_chosen"
+                           name="selected_country"
                            id="btnradio{{ forloop.counter }}"
                            value="{{ option.0 }}" autocomplete="off">
                     <label class="btn btn-outline-primary"
@@ -30,7 +30,6 @@
                 {% endfor %}
 
             </div>
-            <!--                {{ form.as_p }}-->
         </div>
         <button type="submit" name="check" class="btn btn-primary">Submit
         </button>
@@ -40,8 +39,5 @@
             </button>
         {% endif %}
     </form>
-    {% if correct_answer %}
-        <div>Correct answer was {{ correct_answer }}</div>
-    {% endif %}
 </div>
 </body>

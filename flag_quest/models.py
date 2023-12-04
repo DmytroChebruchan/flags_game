@@ -18,5 +18,5 @@ class Answer(models.Model):
     your_answer = models.CharField(max_length=500)
     correct_answer = models.CharField(max_length=500)
 
-    def __str(self):
+    def __str__(self):
         return f"{self.your_answer}"

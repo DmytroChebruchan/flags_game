@@ -6,7 +6,7 @@ from flag_quest.additional_function import (context_generator,
                                             options_generator,
                                             save_reply_of_user,
                                             total_result_calculator)
-from flag_quest.forms import FlagForm
+from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, CountryInfo
 
 
@@ -48,7 +48,7 @@ class GamePage(FormView):
 
     def get_context_data(self, **kwargs):
         self.question = context_generator("flag", "country")
-        self.form_class = FlagForm(options=options_generator(self.question))
+        self.form_class = AnswerForm(options=options_generator(self.question))
 
         context = {"question": self.question, "form": self.form_class}
         return context
