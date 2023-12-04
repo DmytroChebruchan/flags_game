@@ -3,8 +3,7 @@ import json
 from flag_quest.models import CountryInfo
 
 # Path to your JSON file
-file_path = "/Users/dmitriychebruchan/programming/flags_game/flags_game_site/flag_quest/country_continents.json"
-
+file_path = "//flag_quest/country_continents.json"
 
 # Open the JSON file
 with open(file_path, "r") as file:
