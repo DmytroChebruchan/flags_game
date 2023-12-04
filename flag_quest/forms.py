@@ -17,3 +17,7 @@ class AnswerForm(forms.ModelForm):
             widget=forms.RadioSelect(),
             required=True,
         )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
