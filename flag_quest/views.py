@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 
@@ -41,20 +42,28 @@ class GamePage(FormView):
     model = CountryInfo
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
+    continent = 'Europe'
     question = None
     form_class = None
     correct_answer = None
     success_url = "/"
 
     def get_context_data(self, **kwargs):
-        self.question = context_generator("flag", "country")
+        self.continent = self.kwargs.get('continent_name')
+        self.question = context_generator("flag",
+                                          "country",
+                                          self.continent)
         self.form_class = AnswerForm(options=options_generator(self.question))
 
-        context = {"question": self.question, "form": self.form_class}
+        context = {"question": self.question,
+                   "form": self.form_class,
+                   "continent": self.continent}
         return context
 
     def post(self, request, **kwargs):
         if "check" in request.POST:
             returned_request = request.POST
             save_reply_of_user(returned_request)
-            return redirect("game")
+            redirect_url = reverse('game',
+                                   kwargs={'continent_name': self.continent})
+            return redirect(redirect_url)
