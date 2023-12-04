@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "flag_quest",
+
+    "flag_quest.apps.FlagQuestConfig",
 ]
 
 MIDDLEWARE = [

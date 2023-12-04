@@ -1,4 +1,5 @@
 import json
+
 from flag_quest.models import CountryInfo
 
 # Path to your JSON file

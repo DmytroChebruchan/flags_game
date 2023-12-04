@@ -1,20 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Results</title>
-    <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Add additional custom styles if needed */
-        .flag-img {
-            max-width: 50px; /* Adjust the image width if necessary */
-        }
-    </style>
-</head>
+{% include 'base.html' %}
 <body>
     <div class="container">
         {% include 'nav_bar.html' %}
@@ -38,7 +22,8 @@
                 {% for result in results %}
                 <tr>
                     <td>{{ result.your_answer }}</td>
-                    <td><img src="{{ result.flag_picture }}" alt="{{ result.name }} Flag" class="flag-img"></td>
+                    <td><img src="{{ result.flag_picture }}" alt="
+{{ result.name }} Flag" style="flag-img { max-width: 50px; }"></td>
                     <td>{{ result.is_correct }}</td>
                     <td>{{ result.correct_answer }}</td>
                 </tr>

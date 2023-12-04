@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import ListCounties, GamePage, ResultsCountries, IndexView
 
+from .views import GamePage, IndexView, ListCounties, ResultsCountries
 
 urlpatterns = [
     path("list_of_countries", ListCounties.as_view()),

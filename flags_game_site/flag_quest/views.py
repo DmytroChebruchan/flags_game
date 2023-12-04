@@ -1,19 +1,17 @@
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
-from django.shortcuts import render, redirect
 
+from flag_quest.additional_function import (context_generator,
+                                            options_generator,
+                                            save_reply_of_user,
+                                            total_result_calculator)
 from flag_quest.forms import FlagForm
-from flag_quest.models import CountryInfo, Answer
-from flag_quest.additional_function import (
-    context_generator,
-    options_generator,
-    save_reply_of_user,
-    total_result_calculator
-)
+from flag_quest.models import Answer, CountryInfo
 
 
 class IndexView(TemplateView):
-    template_name = 'index.html'
+    template_name = "index.html"
 
 
 # Create your views here.
@@ -30,13 +28,13 @@ class ResultsCountries(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['total_result'] = total_result_calculator()
+        context["total_result"] = total_result_calculator()
         return context
 
     def post(self, request):
         if "clean" in request.POST:
             Answer.objects.all().delete()
-            return redirect('results')
+            return redirect("results")
 
 
 class GamePage(FormView):
