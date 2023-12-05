@@ -6,37 +6,9 @@
     {% include '../nav_bar.html' %}
 
     <h1>Identify the Country</h1>
-    {{ context }}
+    <h2 class="h2">Continent: {{ continent }}.</h2>
     <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
          class="img-fluid mt-3 mb-3">
-
-    {#    <form method="post">#}
-    {#        {% csrf_token %}#}
-    {#        <div class="mb-3">#}
-    {#            <label>#}
-    {#                <input type="text" name="flag_picture"#}
-    {#                       value="{{ question.question }}" hidden="hidden">#}
-    {#            </label>#}
-    {#            <div class="btn-group" role="group"#}
-    {#                 aria-label="Basic radio toggle button group">#}
-    {##}
-    {#                {% for option in form.options %}#}
-    {#                    <input type="radio" class="btn-check"#}
-    {#                           name="option_chosen"#}
-    {#                           id="btnradio{{ forloop.counter }}"#}
-    {#                           value="{{ option.0 }}"#}
-    {#                           autocomplete="off">#}
-    {#                    <label class="btn btn-outline-primary"#}
-    {#                           for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>#}
-    {#                {% endfor %}#}
-    {##}
-    {#            </div>#}
-    {##}
-    {#        </div>#}
-    {#        <button type="submit" name="check" class="btn btn-primary">Submit#}
-    {#        </button>#}
-    {##}
-    {#    </form>#}
 
     <form method="post">
         {% csrf_token %}
@@ -47,23 +19,25 @@
             </label>
             <div class="btn-group" role="group"
                  aria-label="Basic radio toggle button group">
-                {% for radio in form.selected_country %}
+
+                {% for option in form.options %}
                     <input type="radio" class="btn-check"
-                           name="option_chosen"
+                           name="selected_country"
                            id="btnradio{{ forloop.counter }}"
-                           value="{{ radio.choice_value }}"
-                            {% if radio.id_for_label %}
-                           id="{{ radio.id_for_label }}" {% endif %}
-                            {% if radio.is_checked %} checked {% endif %}>
+                           value="{{ option.0 }}" autocomplete="off">
                     <label class="btn btn-outline-primary"
-                           for="btnradio{{ forloop.counter }}">{{ radio.choice_label }}</label>
+                           for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>
                 {% endfor %}
+
             </div>
         </div>
         <button type="submit" name="check" class="btn btn-primary">Submit
         </button>
+        {% if correct_answer %}
+            <button type="submit" name="next" class="btn btn-primary">Next
+                flag
+            </button>
+        {% endif %}
     </form>
-
-
 </div>
 </body>
