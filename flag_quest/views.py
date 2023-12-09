@@ -62,6 +62,7 @@ class GamePage(FormView):
 
     def post(self, request, **kwargs):
         if "check" in request.POST:
+            self.continent = self.kwargs.get('continent_name')
             returned_request = request.POST
             save_reply_of_user(returned_request)
             redirect_url = reverse('game',

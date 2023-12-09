@@ -55,7 +55,7 @@ def collect_correct_countries(flags):
 
 def context_generator(required_param, options_type, continent):
     countries = countries_generator(continent)
-
+    
     if not countries:
         return None
 

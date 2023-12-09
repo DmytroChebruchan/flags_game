@@ -7,7 +7,8 @@ class CountryInfo(models.Model):
     flag_picture = models.CharField(max_length=500)
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
-    weight = models.IntegerField(default=4, null=False)
+
+    # weight = models.IntegerField(default=4, null=False)
 
     def __str__(self):
         return self.name
