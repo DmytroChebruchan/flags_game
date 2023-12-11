@@ -41,7 +41,8 @@
             See Correct Result
         </button>
         <br/>
-        <span>Correct answer is:</span>
+        <span id="correct-result-text" style="display: none;">Correct answer
+            is:</span>
         <p id="correct-result" style="display:
         none;"></p>
 
@@ -52,10 +53,11 @@
         // Show correct answer
         document.getElementById('correct-result').innerText = "{{ correct_answer }}";
         document.getElementById('correct-result').style.display = 'block';
+        document.getElementById('correct-result-text').style.display = 'block';
 
         // Hide after 3 seconds and reload the page
         setTimeout(function () {
-            document.getElementById('correct-result').style.display = 'none';
+            {#document.getElementById('correct-result').style.display = 'none';#}
             location.reload();
         }, 3000);
     });
