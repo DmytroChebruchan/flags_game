@@ -1,4 +1,7 @@
 {% include '../base.html' %}
+<head>
+    <title>Flag quest</title>
+</head>
 <body>
 
 <div class="container">
@@ -33,11 +36,28 @@
         </div>
         <button type="submit" name="check" class="btn btn-primary">Submit
         </button>
-        {% if correct_answer %}
-            <button type="submit" name="next" class="btn btn-primary">Next
-                flag
-            </button>
-        {% endif %}
+        <button type="submit" name="result" id="see-correct" class="btn
+        btn-primary">
+            See Correct Result
+        </button>
+        <br/>
+        <span>Correct answer is:</span>
+        <p id="correct-result" style="display:
+        none;"></p>
+
     </form>
 </div>
+<script>
+    document.getElementById('see-correct').addEventListener('click', function () {
+        // Show correct answer
+        document.getElementById('correct-result').innerText = "{{ correct_answer }}";
+        document.getElementById('correct-result').style.display = 'block';
+
+        // Hide after 3 seconds and reload the page
+        setTimeout(function () {
+            document.getElementById('correct-result').style.display = 'none';
+            location.reload();
+        }, 3000);
+    });
+</script>
 </body>
