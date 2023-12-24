@@ -10,8 +10,10 @@
 
     <h1>Identify the Country</h1>
     <h2 class="h2">Continent: {{ continent }}.</h2>
-    <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
-         class="img-fluid mt-3 mb-3">
+    <div class="img_holder" style="height: 200px">
+        <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
+             class="img-fluid mt-3 mb-3">
+    </div>
 
     <form method="post">
         {% csrf_token %}
