@@ -8,7 +8,7 @@ class AnswerForm(forms.ModelForm):
 
     class Meta:
         model = Answer
-        fields = ['flag_picture', 'your_answer']
+        fields = ["flag_picture", "your_answer"]
 
     def __init__(self, options=None, *args, **kwargs):
         self.options = options if options else []

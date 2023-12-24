@@ -8,12 +8,18 @@ from flag_quest.models import Answer, CountryInfo
 
 def countries_generator(continent: str = None):
     all_countries = CountryInfo.objects.all()
+    used_countries = Answer.objects.all().values_list(
+        "correct_answer", flat=True
+    )
+    filtered_countries = all_countries.exclude(name__in=used_countries)
 
     if continent:
-        return all_countries.filter(continent=continent).order_by("?")[:5]
+        return filtered_countries.filter(continent=continent).order_by("?")[:5]
 
-    random_continent = choice(all_countries).continent
-    return all_countries.filter(continent=random_continent).order_by("?")[:5]
+    random_continent = choice(filtered_countries).continent
+    return filtered_countries.filter(continent=random_continent).order_by("?")[
+        :5
+    ]
 
 
 def get_shuffled_list(input_list):
@@ -54,8 +60,8 @@ def collect_correct_countries(flags):
 
 
 def correct_answer_collector(question):
-    for answer in question['options']:
-        if answer[1] == 'correct':
+    for answer in question["options"]:
+        if answer[1] == "correct":
             return answer[0]
 
     return "no correct answer is detected"
@@ -97,7 +103,7 @@ def save_reply_of_user(returned_request):
     try:
         your_answer = returned_request["selected_country"]
     except KeyError:
-        your_answer = ''
+        your_answer = ""
 
     correct_answer = country_by_flag(returned_request["flag_picture"])
 

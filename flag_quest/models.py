@@ -7,6 +7,7 @@ class CountryInfo(models.Model):
     flag_picture = models.CharField(max_length=500)
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
+    meaning_of_flag = models.CharField(max_length=1200)
 
     # weight = models.IntegerField(default=4, null=False)
 
@@ -24,12 +25,14 @@ class Answer(models.Model):
         return f"{self.your_answer}"
 
     def save_reply(self, returned_request):
-        self.your_answer = returned_request['option_chosen']
-        self.flag_picture = returned_request['flag_picture']
+        self.your_answer = returned_request["option_chosen"]
+        self.flag_picture = returned_request["flag_picture"]
         self.answer_checker()
         self.save()
 
     def answer_checker(self):
         country = CountryInfo.objects.get(flag_picture=self.flag_picture)
         self.correct_answer = country.name
-        self.is_correct = True if self.correct_answer == self.your_answer else False
+        self.is_correct = (
+            True if self.correct_answer == self.your_answer else False
+        )
