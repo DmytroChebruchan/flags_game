@@ -5,11 +5,13 @@ from django.urls import reverse
 from django.views.generic import ListView, TemplateView
 from django.views.generic.edit import FormView
 
-from flag_quest.additional_function import (context_generator,
-                                            options_generator,
-                                            save_reply_of_user,
-                                            total_result_calculator,
-                                            correct_answer_collector)
+from flag_quest.additional_function import (
+    context_generator,
+    correct_answer_collector,
+    options_generator,
+    save_reply_of_user,
+    total_result_calculator,
+)
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, CountryInfo
 
@@ -45,26 +47,14 @@ class GamePage(FormView):
     model = CountryInfo
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
-    continent = 'Europe'
+    continent = "Europe"
     question = None
     form_class = None
     correct_answer = None
     success_url = "/"
 
-    # def get_context_data(self, **kwargs):
-    #     self.continent = self.kwargs.get('continent_name')
-    #     self.question = context_generator("flag",
-    #                                       "country",
-    #                                       self.continent)
-    #     self.form_class = AnswerForm(options=options_generator(self.question))
-    #
-    #     context = {"question": self.question,
-    #                "form": self.form_class,
-    #                "continent": self.continent}
-    #     return context
-
     def get_context_data(self, **kwargs):
-        self.continent = self.kwargs.get('continent_name')
+        self.continent = self.kwargs.get("continent_name")
         self.question = context_generator("flag", "country", self.continent)
         self.form_class = AnswerForm(options=options_generator(self.question))
 
@@ -72,18 +62,19 @@ class GamePage(FormView):
             "question": self.question,
             "form": self.form_class,
             "continent": self.continent,
-            "correct_answer": correct_answer_collector(self.question)
+            "correct_answer": correct_answer_collector(self.question),
         }
         return context
 
     def post(self, request, **kwargs):
-        self.continent = self.kwargs.get('continent_name')
+        self.continent = self.kwargs.get("continent_name")
         returned_request = request.POST
         save_reply_of_user(returned_request)
 
         if "result" in request.POST:
             time.sleep(3.0)
 
-        redirect_url = reverse('game',
-                               kwargs={'continent_name': self.continent})
+        redirect_url = reverse(
+            "game", kwargs={"continent_name": self.continent}
+        )
         return redirect(redirect_url)
