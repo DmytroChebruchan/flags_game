@@ -22,3 +22,14 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"{self.your_answer}"
+
+    def save_reply(self, returned_request):
+        self.your_answer = returned_request['option_chosen']
+        self.flag_picture = returned_request['flag_picture']
+        self.answer_checker()
+        self.save()
+
+    def answer_checker(self):
+        country = CountryInfo.objects.get(flag_picture=self.flag_picture)
+        self.correct_answer = country.name
+        self.is_correct = True if self.correct_answer == self.your_answer else False
