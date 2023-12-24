@@ -53,6 +53,14 @@ def collect_correct_countries(flags):
     return correct_countries
 
 
+def correct_answer_collector(question):
+    for answer in question['options']:
+        if answer[1] == 'correct':
+            return answer[0]
+
+    return "no correct answer is detected"
+
+
 def context_generator(required_param, options_type, continent):
     countries = countries_generator(continent)
 
@@ -61,9 +69,11 @@ def context_generator(required_param, options_type, continent):
 
     country_question = countries.first()
 
+    question = ""
     if required_param == "flag":
         question = country_question.flag_picture
 
+    correct_answer = ""
     if options_type == "country":
         correct_answer = country_question.name
 
@@ -83,7 +93,12 @@ def country_by_flag(flag_picture):
 
 
 def save_reply_of_user(returned_request):
-    your_answer = returned_request["selected_country"]
+    # fix below
+    try:
+        your_answer = returned_request["selected_country"]
+    except KeyError:
+        your_answer = ''
+
     correct_answer = country_by_flag(returned_request["flag_picture"])
 
     answer = Answer(
