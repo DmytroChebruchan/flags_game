@@ -1,4 +1,5 @@
 {% include '../base.html' %}
+{% load cache %}
 <head>
     <title>All countries</title>
 </head>
@@ -11,6 +12,7 @@
     <table class="table table-bordered">
         <thead>
         <tr>
+            <th>#</th>
             <th>Country</th>
             <th>Capital City</th>
             <th>Continent</th>
@@ -18,16 +20,21 @@
         </tr>
         </thead>
         <tbody>
-        {% for country in countries %}
-            <tr>
-                <td>{{ country.name }}</td>
-                <td>{{ country.capital }}</td>
-                <td>{{ country.continent }}</td>
-                <td><img src="{{ country.flag_picture }}"
-                         alt="{{ country.name }} Flag" class="flag-img"></td>
-            </tr>
-        {% endfor %}
-        </tbody>
+            {% for country in countries %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ country.name }}</td>
+                    <td>{{ country.capital }}</td>
+                    <td>{{ country.continent }}</td>
+                    <td>
+                        {# Cache for 5 minutes (300 seconds) #}
+                        <img src="{{ country.flag_picture }}"
+                             alt="{{ country.name }} Flag" class="flag-img">
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
     </table>
 </div>
 
