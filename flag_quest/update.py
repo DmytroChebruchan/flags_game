@@ -3,7 +3,8 @@ import json
 from flag_quest.models import CountryInfo
 
 # Path to your JSON file
-file_path = "flag_quest/flags_meaning.json"
+file_path = "flag_quest/update_from_file.json"
+field_name = "meaning_of_flag"
 
 # Open the JSON file
 with open(file_path, "r") as file:
@@ -12,9 +13,8 @@ with open(file_path, "r") as file:
 # Get all countries from the database
 countries_from_db = CountryInfo.objects.all()
 
-# Create a dictionary with country names as keys and continents as values
 country_continent_dict = {
-    entry["name"]: entry["meaning_of_flag"] for entry in continents_data
+    entry["name"]: entry[field_name] for entry in continents_data
 }
 
 for country in countries_from_db:
