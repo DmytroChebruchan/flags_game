@@ -31,7 +31,8 @@ class ListCounties(ListView):
         continent = self.kwargs.get('continent')  # Retrieve continent from URL
 
         if continent:  # Check if continent is provided in the URL
-            queryset = queryset.filter(continent__iexact=continent)
+            queryset = queryset.filter(continent__iexact=continent).order_by(
+                'weight')
 
         return queryset
 

@@ -27,7 +27,7 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ country.name }}</td>
                     <td>{{ country.capital }}</td>
-                    <td>{{ country.continent }}</td>
+                    <td><a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a></td>
                     <td>
                         {# Cache for 5 minutes (300 seconds) #}
                         <img src="{{ country.flag_picture }}"
