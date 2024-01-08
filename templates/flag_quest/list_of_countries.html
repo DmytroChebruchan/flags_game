@@ -1,7 +1,9 @@
 {% include '../base.html' %}
 {% load cache %}
+{% load static %}
 <head>
     <title>All countries</title>
+    <link rel="stylesheet" href='{% static "css/style.css" %}'/>
 </head>
 <body>
 
@@ -9,7 +11,8 @@
 
     {% include '../nav_bar.html' %}
 
-    <h1 class="h1">List of countries</h1>
+    <h1 class="h1">List of countries{% if continent %} in {{ continent }}
+        {% endif %}</h1>
 
     <table class="table table-bordered">
         <thead>
@@ -17,7 +20,9 @@
             <th>#</th>
             <th>Country</th>
             <th>Capital City</th>
+            {% if show_continent %}
             <th>Continent</th>
+            {% endif %}
             <th>Flag</th>
         </tr>
         </thead>
@@ -27,9 +32,10 @@
                     <td>{{ forloop.counter }}</td>
                     <td>{{ country.name }}</td>
                     <td>{{ country.capital }}</td>
+                    {% if show_continent %}
                     <td><a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a></td>
-                    <td>
-                        {# Cache for 5 minutes (300 seconds) #}
+                    {% endif %}
+                    <td class="small-img-td">
                         <img src="{{ country.flag_picture }}"
                              alt="{{ country.name }} Flag" class="flag-img">
 

@@ -1,4 +1,9 @@
 .img_holder {
-    width: 140px;
+    width: 200px;
     height: 70px;
+}
+
+.small-img-td {
+    width: 73px;
+    height: 73px;
 }

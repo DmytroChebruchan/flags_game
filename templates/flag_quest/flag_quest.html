@@ -10,7 +10,9 @@
     {% include 'nav_bar.html' %}
 
     <h1>Identify the Country</h1>
+    {% if continent %}
     <h2 class="h2">Continent: {{ continent }}.</h2>
+    {% endif %}
     {% if question %}
         <div class="img_holder" style="height: 200px">
             <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"

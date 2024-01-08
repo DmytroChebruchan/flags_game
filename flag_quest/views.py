@@ -36,6 +36,13 @@ class ListCounties(ListView):
 
         return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["show_continent"] = False if self.kwargs.get('continent') \
+            else True
+        context["continent"] = self.kwargs.get('continent')
+        return context
+
 
 class ResultsCountries(ListView):
     model = Answer
