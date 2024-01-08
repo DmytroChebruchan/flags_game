@@ -1,16 +1,20 @@
-{% include '../base.html' %}
+{% include 'base.html' %}
+{% load static %}
+<head>
+    <title>Flag quest</title>
+</head>
 <body>
 
 <div class="container">
 
-    {% include '../nav_bar.html' %}
+    {% include 'nav_bar.html' %}
 
-    <h1 class="h1">Identify the Country</h1>
-    {% if continent %}
-        <h2 class="h2">Continent: {{ continent }}</h2>
-    {% endif %}
-    <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
-         class="img-fluid mt-3 mb-3">
+    <h1>Identify the Country</h1>
+    <h2 class="h2">Continent: {{ continent }}.</h2>
+    <div class="img_holder" style="height: 200px">
+        <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
+             class="img-fluid mt-3 mb-3">
+    </div>
 
     <form method="post">
         {% csrf_token %}
@@ -21,23 +25,41 @@
             </label>
             <div class="btn-group" role="group"
                  aria-label="Basic radio toggle button group">
-                {% for radio in form.your_answer %}
+
+                {% for option in form.options %}
                     <input type="radio" class="btn-check"
-                           name="option_chosen"
+                           name="selected_country"
                            id="btnradio{{ forloop.counter }}"
-                           value="{{ radio.choice_value }}"
-                            {% if radio.id_for_label %}
-                           id="{{ radio.id_for_label }}" {% endif %}
-                            {% if radio.is_checked %} checked {% endif %}>
+                           value="{{ option.0 }}" autocomplete="off">
                     <label class="btn btn-outline-primary"
-                           for="btnradio{{ forloop.counter }}">{{ radio.choice_label }}</label>
+                           for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>
                 {% endfor %}
+
             </div>
         </div>
-        <button type="submit" name="check" class="btn btn-primary">Submit
+        <button type="submit" id="see-correct" name="check" class="btn btn-primary">
+            Submit
         </button>
+        <br/>
+        <span id="correct-result-text" style="display: none;">Correct answer
+            is:</span>
+        <p id="correct-result" style="display:
+        none;"></p>
+
     </form>
-
-
 </div>
+<script>
+    document.getElementById('see-correct').addEventListener('click', function () {
+        // Show correct answer
+        document.getElementById('correct-result').innerText = "{{ correct_answer }}";
+        document.getElementById('correct-result').style.display = 'block';
+        document.getElementById('correct-result-text').style.display = 'block';
+
+        // Hide after 3 seconds and reload the page
+        setTimeout(function () {
+            {#document.getElementById('correct-result').style.display = 'none';#}
+            location.reload();
+        }, 3000);
+    });
+</script>
 </body>
