@@ -5,7 +5,10 @@
 <body>
 <div class="container">
     {% include '../nav_bar.html' %}
+
+    <h1 class="h1">Results</h1>
     <h2>Correct responses are {{ total_result.0 }}/{{ total_result.1 }}.</h2>
+
     <form method="post">
         {% csrf_token %}
         <button type="submit" name="clean" class="btn btn-danger">Clean

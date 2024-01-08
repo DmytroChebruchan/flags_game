@@ -11,12 +11,12 @@
 
     <h1>Identify the Country</h1>
     <h2 class="h2">Continent: {{ continent }}.</h2>
-    <div class="img_holder" style="height: 200px">
-        <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
-             class="img-fluid mt-3 mb-3">
-    </div>
-
-    <form method="post">
+    {% if question %}
+        <div class="img_holder" style="height: 200px">
+            <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
+                 class="img-fluid mt-3 mb-3">
+        </div>
+        <form method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label>
@@ -47,6 +47,11 @@
         none;"></p>
 
     </form>
+    {% else %}
+        <p>There are no more countries of required continent.</p>
+    {% endif %}
+
+    
 </div>
 <script>
     document.getElementById('see-correct').addEventListener('click', function () {

@@ -18,8 +18,8 @@ def countries_generator(continent: str = None):
 
     random_continent = choice(filtered_countries).continent
     return filtered_countries.filter(continent=random_continent).order_by("?")[
-        :5
-    ]
+           :5
+           ]
 
 
 def get_shuffled_list(input_list):
@@ -27,7 +27,9 @@ def get_shuffled_list(input_list):
 
 
 def options_generator(question):
-    return [(option[0], option[0]) for option in question["options"]]
+    if question:
+        return [(option[0], option[0]) for option in question["options"]]
+    return None
 
 
 def adding_correct_answers(context):
@@ -60,6 +62,9 @@ def collect_correct_countries(flags):
 
 
 def correct_answer_collector(question):
+    if question is None:
+        return None
+
     for answer in question["options"]:
         if answer[1] == "correct":
             return answer[0]
