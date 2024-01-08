@@ -71,8 +71,7 @@ class GamePage(FormView):
         returned_request = request.POST
         save_reply_of_user(returned_request)
 
-        if "result" in request.POST:
-            time.sleep(3.0)
+        time.sleep(2.0)
 
         redirect_url = reverse(
             "game", kwargs={"continent_name": self.continent}

@@ -9,7 +9,7 @@ class CountryInfo(models.Model):
     continent = models.CharField(max_length=200, null=True)
     meaning_of_flag = models.CharField(max_length=1200)
 
-    # weight = models.IntegerField(default=4, null=False)
+    weight = models.IntegerField(default=4, null=True)
 
     def __str__(self):
         return self.name
