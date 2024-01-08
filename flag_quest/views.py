@@ -26,6 +26,15 @@ class ListCounties(ListView):
     template_name = "flag_quest/list_of_countries.html"
     context_object_name = "countries"
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        continent = self.kwargs.get('continent')  # Retrieve continent from URL
+
+        if continent:  # Check if continent is provided in the URL
+            queryset = queryset.filter(continent__iexact=continent)
+
+        return queryset
+
 
 class ResultsCountries(ListView):
     model = Answer
