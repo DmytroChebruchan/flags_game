@@ -1,13 +1,19 @@
 from django.db import models
 
 
-# Create your models here.
+class Continent(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=1000, null=True)
+
+
 class CountryInfo(models.Model):
     name = models.CharField(max_length=200)
     flag_picture = models.CharField(max_length=500)
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
     meaning_of_flag = models.CharField(max_length=1200)
+    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING,
+                                    null=True)
 
     weight = models.IntegerField(default=4, null=True)
 
