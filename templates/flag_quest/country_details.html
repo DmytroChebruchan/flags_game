@@ -1,0 +1,45 @@
+{% include '../base.html' %}
+{% load static %}
+<head>
+    <title>All countries</title>
+    <link rel="stylesheet" href='{% static "css/style.css" %}'/>
+</head>
+<head>
+    <title>Country details</title>
+</head>
+<body>
+
+<div class="container">
+    {% include '../nav_bar.html' %}
+
+    <h1 class="h1">Detials about country {{ country.name }}</h1>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="width_73">Parameter</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="width_73">Flag</td>
+            <td class="small-img-td">
+                <img src="{{ country.flag_picture }}"
+                     alt="{{ country.name }} Flag" class="flag-img">
+            </td>
+        </tr>
+        <tr>
+            <td class="width_73">Description of flag</td>
+            <td><p>{{ country.meaning_of_flag }}</p></td>
+        </tr>
+        <tr>
+            <td class="width_73">Capital</td>
+            <td><p>{{ country.capital }}</p></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
