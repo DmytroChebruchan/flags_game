@@ -16,7 +16,11 @@
     width: 73px;
 }
 
-td {
+td, th {
     text-align: center;
     vertical-align: middle !important;
+}
+
+.margin_15px {
+    margin: 15px
 }

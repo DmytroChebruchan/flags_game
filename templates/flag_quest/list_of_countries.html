@@ -10,6 +10,10 @@
 <div class="container">
 
     {% include '../nav_bar.html' %}
+    {% if continent_description %}
+        <h2 class="h2">Continent: {{ continent }}</h2>
+        <p class="p">{{ continent_description }}</p>
+    {% endif %}
 
     <h1 class="h1">List of countries{% if continent %} in {{ continent }}
     {% endif %}</h1>

@@ -1,13 +1,7 @@
 from django.urls import path
 
-from .views import (
-    CountryDetailsView,
-    GamePage,
-    IndexView,
-    AboutView,
-    ListCounties,
-    ResultsCountries,
-)
+from .views import (AboutView, CountryDetailsView, GamePage, IndexView,
+                    ListCounties, ResultsCountries)
 
 urlpatterns = [
     path("list_of_countries/", ListCounties.as_view(), name="all_countries"),
@@ -25,5 +19,5 @@ urlpatterns = [
     path("game/<path:continent_name>", GamePage.as_view(), name="game"),
     path("results", ResultsCountries.as_view(), name="results"),
     path("", IndexView.as_view(), name="index"),
-    path("about", AboutView.as_view(), name="about")
+    path("about", AboutView.as_view(), name="about"),
 ]

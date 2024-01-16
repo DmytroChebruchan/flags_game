@@ -1,22 +1,20 @@
 import time
 
-from django.shortcuts import redirect
 from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
 
-from flag_quest.additional_function import (
-    context_generator,
-    correct_answer_collector,
-    get_country_info,
-    options_generator,
-    save_reply_of_user,
-    total_result_calculator,
-)
+from flag_quest.additional_function import (context_generator,
+                                            correct_answer_collector,
+                                            get_country_info,
+                                            options_generator,
+                                            save_reply_of_user,
+                                            total_result_calculator)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
-from flag_quest.models import Answer, CountryInfo
+from flag_quest.models import Answer, Continent, CountryInfo
 
 
 class IndexView(TemplateView):
@@ -49,9 +47,12 @@ class ListCounties(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_continent"] = False if self.kwargs.get(
-            "continent") else True
+        context["show_continent"] = False if self.kwargs.get("continent") else True
         context["continent"] = self.kwargs.get("continent")
+        if context["continent"]:
+            context["continent_description"] = Continent.objects.get(
+                name=self.kwargs.get("continent")
+            ).description
         return context
 
 
@@ -101,8 +102,7 @@ class GamePage(FormView):
 
         time.sleep(2.0)
 
-        redirect_url = reverse("game",
-                               kwargs={"continent_name": self.continent})
+        redirect_url = reverse("game", kwargs={"continent_name": self.continent})
         return redirect(redirect_url)
 
 

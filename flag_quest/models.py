@@ -12,8 +12,7 @@ class CountryInfo(models.Model):
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
     meaning_of_flag = models.CharField(max_length=1200)
-    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING,
-                                    null=True)
+    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING, null=True)
 
     weight = models.IntegerField(default=4, null=True)
 

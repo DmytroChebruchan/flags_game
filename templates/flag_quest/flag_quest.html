@@ -2,58 +2,59 @@
 {% load static %}
 <head>
     <title>Flag quest</title>
+    <link rel="stylesheet" href='{% static "css/style.css" %}'/>
 </head>
 <body>
 
 <div class="container">
 
     {% include 'nav_bar.html' %}
-
-    <h1>Identify the Country</h1>
-    {% if continent %}
-    <h2 class="h2">Continent: {{ continent }}.</h2>
-    {% endif %}
-    {% if question %}
-        <div class="img_holder" style="height: 200px">
-            <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
-                 class="img-fluid mt-3 mb-3">
-        </div>
-        <form method="post">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label>
-                <input type="text" name="flag_picture"
-                       value="{{ question.question }}" hidden="hidden">
-            </label>
-            <div class="btn-group" role="group"
-                 aria-label="Basic radio toggle button group">
-
-                {% for option in form.options %}
-                    <input type="radio" class="btn-check"
-                           name="selected_country"
-                           id="btnradio{{ forloop.counter }}"
-                           value="{{ option.0 }}" autocomplete="off">
-                    <label class="btn btn-outline-primary"
-                           for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>
-                {% endfor %}
-
+    <main class="margin_15px">
+        <h1>Identify the Country</h1>
+        {% if continent %}
+        <h2 class="h2">Continent: {{ continent }}.</h2>
+        {% endif %}
+        {% if question %}
+            <div class="img_holder" style="height: 200px">
+                <img src="{{ question.question }}" alt="Flag" style="max-width: 200px"
+                     class="img-fluid mt-3 mb-3">
             </div>
-        </div>
-        <button type="submit" id="see-correct" name="check" class="btn btn-primary">
-            Submit
-        </button>
-        <br/>
-        <span id="correct-result-text" style="display: none;">Correct answer
-            is:</span>
-        <p id="correct-result" style="display:
-        none;"></p>
-
-    </form>
-    {% else %}
-        <p>There are no more countries of required continent.</p>
-    {% endif %}
-
+            <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>
+                    <input type="text" name="flag_picture"
+                           value="{{ question.question }}" hidden="hidden">
+                </label>
+                <div class="btn-group" role="group"
+                     aria-label="Basic radio toggle button group">
     
+                    {% for option in form.options %}
+                        <input type="radio" class="btn-check"
+                               name="selected_country"
+                               id="btnradio{{ forloop.counter }}"
+                               value="{{ option.0 }}" autocomplete="off">
+                        <label class="btn btn-outline-primary"
+                               for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>
+                    {% endfor %}
+    
+                </div>
+            </div>
+            <button type="submit" id="see-correct" name="check" class="btn btn-primary">
+                Submit
+            </button>
+            <br/>
+            <span id="correct-result-text" style="display: none;">Correct answer
+                is:</span>
+                <p id="correct-result" style="display:
+            none;"></p>
+    
+        </form>
+        {% else %}
+            <p>There are no more countries of required continent.</p>
+        {% endif %}
+
+    </main>
 </div>
 <script>
     document.getElementById('see-correct').addEventListener('click', function () {

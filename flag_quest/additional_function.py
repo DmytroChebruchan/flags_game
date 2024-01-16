@@ -1,15 +1,15 @@
 import random
+from random import choice
+from typing import List, Optional, Union
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from flag_quest.models import Answer, CountryInfo, Continent
-
-from random import choice
-from typing import Optional, Union, List
+from flag_quest.models import Answer, Continent, CountryInfo
 
 
 def countries_generator(
-        continent: Optional[str] = None) -> Union[List[CountryInfo], None]:
+    continent: Optional[str] = None,
+) -> Union[List[CountryInfo], None]:
     """
     Generates a set of unique country objects for quiz questions.
 
@@ -28,8 +28,7 @@ def countries_generator(
     all_countries = CountryInfo.objects.all()
 
     # Retrieve the list of used countries from the Answer model
-    used_countries = Answer.objects.all().values_list("correct_answer",
-                                                      flat=True)
+    used_countries = Answer.objects.all().values_list("correct_answer", flat=True)
 
     # Exclude used countries from the list of all countries
     filtered_countries = all_countries.exclude(name__in=used_countries)
@@ -45,16 +44,16 @@ def countries_generator(
 
         # Return a list of country objects from the specified continent
         return list(
-            filtered_countries.filter(continent_1_id=continent_object).order_by(
-                "?")[:5])
+            filtered_countries.filter(continent_1_id=continent_object).order_by("?")[:5]
+        )
 
     # If no specific continent is specified, randomly choose a continent
     random_continent = choice(filtered_countries).continent_1_id
 
     # Return a list of country objects from the randomly chosen continent
     return list(
-        filtered_countries.filter(continent_1_id=random_continent).order_by(
-            "?")[:5])
+        filtered_countries.filter(continent_1_id=random_continent).order_by("?")[:5]
+    )
 
 
 def get_shuffled_list(input_list):
@@ -121,8 +120,7 @@ def context_generator(required_param, options_type, continent_name):
     options = [(correct_answer, "correct")]
     options.extend((country.name, "wrong") for country in countries[1:])
 
-    return {"question": question,
-            "options": get_shuffled_list(options)}
+    return {"question": question, "options": get_shuffled_list(options)}
 
 
 def country_by_flag(flag_picture):

@@ -6,5 +6,5 @@ CONTINENTS = [
     "North America",
     "Africa",
     "Antarctica",
-    "Oceania"
+    "Oceania",
 ]
