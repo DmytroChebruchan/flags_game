@@ -8,18 +8,14 @@ from flag_quest.models import Answer, CountryInfo
 
 def countries_generator(continent: str = None):
     all_countries = CountryInfo.objects.all()
-    used_countries = Answer.objects.all().values_list(
-        "correct_answer", flat=True
-    )
+    used_countries = Answer.objects.all().values_list("correct_answer", flat=True)
     filtered_countries = all_countries.exclude(name__in=used_countries)
 
     if continent:
         return filtered_countries.filter(continent=continent).order_by("?")[:5]
 
     random_continent = choice(filtered_countries).continent
-    return filtered_countries.filter(continent=random_continent).order_by("?")[
-           :5
-           ]
+    return filtered_countries.filter(continent=random_continent).order_by("?")[:5]
 
 
 def get_shuffled_list(input_list):
@@ -126,3 +122,11 @@ def total_result_calculator():
     correct_answers = Answer.objects.filter(is_correct=True).count()
     result = (correct_answers, answers)
     return result
+
+
+def get_country_info(country_name):
+    try:
+        country = CountryInfo.objects.get(name=country_name)
+    except CountryInfo.DoesNotExist:
+        return "Country not found"
+    return country
