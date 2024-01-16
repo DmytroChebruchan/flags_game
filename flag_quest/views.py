@@ -1,13 +1,15 @@
 import time
 
 from django.shortcuts import redirect
+from django.http import Http404
 from django.urls import reverse
-from django.views.generic import ListView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
 
 from flag_quest.additional_function import (
     context_generator,
     correct_answer_collector,
+    get_country_info,
     options_generator,
     save_reply_of_user,
     total_result_calculator,
@@ -34,19 +36,19 @@ class ListCounties(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        continent = self.kwargs.get('continent')
+        continent = self.kwargs.get("continent")
 
         if continent and continent != "All Continents":
             queryset = queryset.filter(continent__iexact=continent).order_by(
-                'weight')
+                "weight")
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_continent"] = False if self.kwargs.get('continent') \
-            else True
-        context["continent"] = self.kwargs.get('continent')
+        context["show_continent"] = False if self.kwargs.get(
+            "continent") else True
+        context["continent"] = self.kwargs.get("continent")
         return context
 
 
@@ -96,7 +98,23 @@ class GamePage(FormView):
 
         time.sleep(2.0)
 
-        redirect_url = reverse(
-            "game", kwargs={"continent_name": self.continent}
-        )
+        redirect_url = reverse("game",
+                               kwargs={"continent_name": self.continent})
         return redirect(redirect_url)
+
+
+class CountryDetailsView(DetailView):
+    template_name = "flag_quest/country_details.html"
+    model = CountryInfo
+
+    def get_object(self, queryset=None):
+        country_name = self.kwargs.get("country")
+        try:
+            return self.model.objects.get(name=country_name)
+        except self.model.DoesNotExist:
+            raise Http404("Country not found")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["country"] = get_country_info(context["object"])
+        return context
