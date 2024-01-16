@@ -1,26 +1,60 @@
 import random
-from random import choice
 
 from django.core.exceptions import ObjectDoesNotExist
 
 from flag_quest.models import Answer, CountryInfo, Continent
 
+from random import choice
+from typing import Optional, Union, List
 
-def countries_generator(continent: str = None):
+
+def countries_generator(
+        continent: Optional[str] = None) -> Union[List[CountryInfo], None]:
+    """
+    Generates a set of unique country objects for quiz questions.
+
+    Parameters:
+    - continent (Optional[str]): The name of the continent to filter countries.
+    If None or "All Continents",
+      countries from all continents are considered.
+
+    Returns:
+    - Union[List[CountryInfo], None]: A List containing unique CountryInfo
+    objects based on the specified continent or random selection.
+      Returns None if the continent is not found in the database.
+    """
+
+    # Retrieve all country objects
     all_countries = CountryInfo.objects.all()
+
+    # Retrieve the list of used countries from the Answer model
     used_countries = Answer.objects.all().values_list("correct_answer",
                                                       flat=True)
+
+    # Exclude used countries from the list of all countries
     filtered_countries = all_countries.exclude(name__in=used_countries)
 
+    # If a specific continent is specified, filter countries based on
+    # that continent
     if continent and continent != "All Continents":
-        continent_object = Continent.objects.get(name=continent)
-        return filtered_countries.filter(
-            continent_1_id=continent_object).order_by(
-            "?")[:5]
+        try:
+            continent_object = Continent.objects.get(name=continent)
+        except Continent.DoesNotExist:
+            # Return None if the specified continent is not found
+            return None
 
+        # Return a list of country objects from the specified continent
+        return list(
+            filtered_countries.filter(continent_1_id=continent_object).order_by(
+                "?")[:5])
+
+    # If no specific continent is specified, randomly choose a continent
     random_continent = choice(filtered_countries).continent_1_id
-    return filtered_countries.filter(
-        continent_1_id=random_continent).order_by("?")[:5]
+
+    # Return a list of country objects from the randomly chosen continent
+    return list(
+        filtered_countries.filter(continent_1_id=random_continent).order_by(
+            "?")[:5])
 
 
 def get_shuffled_list(input_list):
@@ -73,27 +107,22 @@ def correct_answer_collector(question):
     return "no correct answer is detected"
 
 
-def context_generator(required_param, options_type, continent):
-    countries = countries_generator(continent)
+def context_generator(required_param, options_type, continent_name):
+    countries = countries_generator(continent_name)
 
     if not countries:
         return None
 
     country_question = countries.first()
 
-    question = ""
-    if required_param == "flag":
-        question = country_question.flag_picture
-
-    correct_answer = ""
-    if options_type == "country":
-        correct_answer = country_question.name
+    question = "" if required_param != "flag" else country_question.flag_picture
+    correct_answer = "" if options_type != "country" else country_question.name
 
     options = [(correct_answer, "correct")]
     options.extend((country.name, "wrong") for country in countries[1:])
 
-    context = {"question": question, "options": get_shuffled_list(options)}
-    return context
+    return {"question": question,
+            "options": get_shuffled_list(options)}
 
 
 def country_by_flag(flag_picture):
