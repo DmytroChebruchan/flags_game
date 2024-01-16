@@ -113,7 +113,7 @@ def context_generator(required_param, options_type, continent_name):
     if not countries:
         return None
 
-    country_question = countries.first()
+    country_question = countries[0]
 
     question = "" if required_param != "flag" else country_question.flag_picture
     correct_answer = "" if options_type != "country" else country_question.name
