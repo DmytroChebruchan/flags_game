@@ -8,10 +8,15 @@
     height: 73px;
 }
 
-.width_73 {
-    width: 73px;
+.height_73 {
+    height: 73px;
 }
 
 .flag-img {
     width: 73px;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle !important;
 }
