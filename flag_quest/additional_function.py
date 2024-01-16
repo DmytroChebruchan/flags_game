@@ -3,19 +3,24 @@ from random import choice
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from flag_quest.models import Answer, CountryInfo
+from flag_quest.models import Answer, CountryInfo, Continent
 
 
 def countries_generator(continent: str = None):
     all_countries = CountryInfo.objects.all()
-    used_countries = Answer.objects.all().values_list("correct_answer", flat=True)
+    used_countries = Answer.objects.all().values_list("correct_answer",
+                                                      flat=True)
     filtered_countries = all_countries.exclude(name__in=used_countries)
 
-    if continent:
-        return filtered_countries.filter(continent=continent).order_by("?")[:5]
+    if continent and continent != "All Continents":
+        continent_object = Continent.objects.get(name=continent)
+        return filtered_countries.filter(
+            continent_1_id=continent_object).order_by(
+            "?")[:5]
 
-    random_continent = choice(filtered_countries).continent
-    return filtered_countries.filter(continent=random_continent).order_by("?")[:5]
+    random_continent = choice(filtered_countries).continent_1_id
+    return filtered_countries.filter(
+        continent_1_id=random_continent).order_by("?")[:5]
 
 
 def get_shuffled_list(input_list):
