@@ -57,6 +57,16 @@
     </main>
 </div>
 <script>
+  // Function to handle button click
+  function handleClick() {
+    // Disable the button
+    document.getElementById("see-correct").disabled = true;
+  }
+
+  // Attach the handleClick function to the button's click event
+  document.getElementById("see-correct").addEventListener("click", handleClick);
+</script>
+<script>
     document.getElementById('see-correct').addEventListener('click', function () {
         // Show correct answer
         document.getElementById('correct-result').innerText = "{{ correct_answer }}";
