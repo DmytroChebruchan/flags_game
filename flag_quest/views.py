@@ -47,7 +47,8 @@ class ListCounties(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_continent"] = False if self.kwargs.get("continent") else True
+        context["show_continent"] = False if self.kwargs.get(
+            "continent") else True
         context["continent"] = self.kwargs.get("continent")
         if context["continent"]:
             context["continent_description"] = Continent.objects.get(
@@ -99,10 +100,9 @@ class GamePage(FormView):
         self.continent = self.kwargs.get("continent_name")
         returned_request = request.POST
         save_reply_of_user(returned_request)
-
-        time.sleep(2.0)
-
-        redirect_url = reverse("game", kwargs={"continent_name": self.continent})
+        redirect_url = reverse("game",
+                               kwargs={"continent_name": self.continent})
+        time.sleep(2)
         return redirect(redirect_url)
 
 
