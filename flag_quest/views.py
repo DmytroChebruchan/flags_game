@@ -28,6 +28,10 @@ class IndexView(TemplateView):
         return context
 
 
+class AboutView(TemplateView):
+    template_name = "about.html"
+
+
 # Create your views here.
 class ListCounties(ListView):
     model = CountryInfo
@@ -35,12 +39,11 @@ class ListCounties(ListView):
     context_object_name = "countries"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().order_by("weight")
         continent = self.kwargs.get("continent")
 
         if continent and continent != "All Continents":
-            queryset = queryset.filter(continent__iexact=continent).order_by(
-                "weight")
+            queryset = queryset.filter(continent__iexact=continent)
 
         return queryset
 
