@@ -46,11 +46,10 @@
                     Submit
                 </button>
                 <br/>
-                <span id="correct-result-text" style="display: none;">Correct answer
-                is:</span>
-                <p id="correct-result" style="display:
-            none;"></p>
-
+                <p id="correct-result-text" style="display: none;">Correct
+                    answer is:
+                    <span id="correct-result""></span>
+                </p>
             </form>
         {% else %}
             <p>There are no more countries of required continent.</p>
@@ -63,7 +62,6 @@
     document.getElementById('submit').addEventListener('click', function () {
         // Show correct answer
         document.getElementById('correct-result').innerText = "{{ correct_answer }}";
-        document.getElementById('correct-result').style.display = 'block';
         document.getElementById('correct-result-text').style.display = 'block';
 
         // Hide after 3 seconds and reload the page
