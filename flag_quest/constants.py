@@ -1,2 +1,10 @@
-CONTINENTS = ["Europe", "Asia", "South America", "North America",
-              "All Continents", "Africa", "Antarctica", "Oceania"]
+CONTINENTS = [
+    "Europe",
+    "Asia",
+    "South America",
+    "North America",
+    "All Continents",
+    "Africa",
+    "Antarctica",
+    "Oceania",
+]
