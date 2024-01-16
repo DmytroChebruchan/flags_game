@@ -12,7 +12,7 @@
     {% include '../nav_bar.html' %}
 
     <h1 class="h1">List of countries{% if continent %} in {{ continent }}
-        {% endif %}</h1>
+    {% endif %}</h1>
 
     <table class="table table-bordered">
         <thead>
@@ -21,28 +21,32 @@
             <th>Country</th>
             <th>Capital City</th>
             {% if show_continent %}
-            <th>Continent</th>
+                <th>Continent</th>
             {% endif %}
             <th>Flag</th>
         </tr>
         </thead>
         <tbody>
-            {% for country in countries %}
-                <tr class="width_73">
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ country.name }}</td>
-                    <td>{{ country.capital }}</td>
-                    {% if show_continent %}
-                    <td><a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a></td>
-                    {% endif %}
-                    <td class="small-img-td">
-                        <img src="{{ country.flag_picture }}"
-                             alt="{{ country.name }} Flag" class="flag-img">
-
+        {% for country in countries %}
+            <tr class="width_73">
+                <td>{{ forloop.counter }}</td>
+                <td>
+                    <a href="/coutry_details/{{ country.name }}">{{ country.name }}</a>
+                </td>
+                <td>{{ country.capital }}</td>
+                {% if show_continent %}
+                    <td>
+                        <a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a>
                     </td>
-                </tr>
-            {% endfor %}
-            </tbody>
+                {% endif %}
+                <td class="small-img-td">
+                    <img src="{{ country.flag_picture }}"
+                         alt="{{ country.name }} Flag" class="flag-img">
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
     </table>
 </div>
 
