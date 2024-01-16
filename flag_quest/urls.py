@@ -4,6 +4,7 @@ from .views import (
     CountryDetailsView,
     GamePage,
     IndexView,
+    AboutView,
     ListCounties,
     ResultsCountries,
 )
@@ -24,4 +25,5 @@ urlpatterns = [
     path("game/<path:continent_name>", GamePage.as_view(), name="game"),
     path("results", ResultsCountries.as_view(), name="results"),
     path("", IndexView.as_view(), name="index"),
+    path("about", AboutView.as_view(), name="about")
 ]
