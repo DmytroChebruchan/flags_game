@@ -12,12 +12,18 @@ from flag_quest.additional_function import (
     save_reply_of_user,
     total_result_calculator,
 )
+from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, CountryInfo
 
 
 class IndexView(TemplateView):
     template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["continents"] = CONTINENTS
+        return context
 
 
 # Create your views here.
@@ -28,9 +34,9 @@ class ListCounties(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        continent = self.kwargs.get('continent')  # Retrieve continent from URL
+        continent = self.kwargs.get('continent')
 
-        if continent:  # Check if continent is provided in the URL
+        if continent and continent != "All Continents":
             queryset = queryset.filter(continent__iexact=continent).order_by(
                 'weight')
 

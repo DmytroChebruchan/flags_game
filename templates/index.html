@@ -16,50 +16,24 @@
     {% include 'nav_bar.html' %}
 
     <h1 class="h1">Flag site</h1>
-    <p class="p">This site was made to learn and test your knowledge of 
+    <p class="p">This site was made to learn and test your knowledge of
         flags of different countries.</p>
-    
-    <h2 class="h2">Play the game with following continent to check your 
+
+    <h2 class="h2">Play the game with following continent to check your
         knowledge of flags.</h2>
     <div class="list-group">
-        <a href="/game/Europe" class="list-group-item
-        list-group-item-action">Europe</a>
-        <a href="/game/Asia" class="list-group-item
-        list-group-item-action">Asia</a>
-        <a href="/game/North America" class="list-group-item
-        list-group-item-action">North
-            America</a>
-        <a href="/game/South America" class="list-group-item
-        list-group-item-action">South
-            America</a>
-        <a href="/game/Africa" class="list-group-item
-        list-group-item-action">Africa</a>
-        <a href="/game/Oceania" class="list-group-item
-        list-group-item-action">Oceania</a>
-        <a href="/game/Antarctica" class="list-group-item
-        list-group-item-action">Antarctica</a>
+        {% for continent in continents %}
+            <a href="/game/{{ continent }}" class="list-group-item
+        list-group-item-action">{{ continent }}</a>
+        {% endfor %}
     </div>
-    
+
     <h2 class="h2">Learn flags of different countries on each continent</h2>
     <div class="list-group">
-        <a href="/list_of_countries" class="list-group-item
-        list-group-item-action">All continents</a>
-        <a href="/list_of_countries/Europe" class="list-group-item
-        list-group-item-action">Europe</a>
-        <a href="/list_of_countries/Asia" class="list-group-item
-        list-group-item-action">Asia</a>
-        <a href="/list_of_countries/North America" class="list-group-item
-        list-group-item-action">North
-            America</a>
-        <a href="/list_of_countries/South America" class="list-group-item
-        list-group-item-action">South
-            America</a>
-        <a href="/list_of_countries/Africa" class="list-group-item
-        list-group-item-action">Africa</a>
-        <a href="/list_of_countries/Oceania" class="list-group-item
-        list-group-item-action">Oceania</a>
-        <a href="/list_of_countries/Antarctica" class="list-group-item
-        list-group-item-action">Antarctica</a>
+        {% for continent in continents %}
+             <a href="/list_of_countries/{{ continent }}" class="list-group-item
+        list-group-item-action">{{ continent }}</a>
+        {% endfor %}
     </div>
 </div>
 
