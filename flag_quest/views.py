@@ -9,7 +9,6 @@ from django.views.generic.edit import FormView
 from flag_quest.additional_function import (question_set_generator,
                                             correct_answer_collector,
                                             get_country_info,
-                                            save_reply_of_user,
                                             total_result_calculator)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
@@ -77,20 +76,24 @@ class GamePage(FormView):
     template_name = "flag_quest/flag_quest.html"
     question_set = None
     form_class = AnswerForm
-    correct_answer = None
     success_url = "/"
 
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        print('Hola')
+        return super().form_invalid(form)
+
     def get_context_data(self, **kwargs):
-        if self.question_set is None:
+        if self.question_set is not None:
             return super().get_context_data(**kwargs)
 
         self.question_set = question_set_generator("flag",
                                                    "country",
-                                                   self.continent)
+                                                   self.kwargs.get(
+                                                       "continent_name"))
         self.form_class = AnswerForm(
             options=self.question_set['options'])
 
@@ -103,12 +106,11 @@ class GamePage(FormView):
         return context
 
     def post(self, request, **kwargs):
-        returned_request = request.POST
-        save_reply_of_user(returned_request)
+        answer = Answer()
+        answer.save_reply(request.POST)
         time.sleep(2)
-        redirect_url = reverse("game",
-                               kwargs={"continent_name":
-                                           self.kwargs.get("continent_name")})
+        kwargs = {"continent_name": self.kwargs.get("continent_name")}
+        redirect_url = reverse("game", kwargs=kwargs)
         return redirect(redirect_url)
 
 
