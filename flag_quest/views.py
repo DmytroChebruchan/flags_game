@@ -9,7 +9,6 @@ from django.views.generic.edit import FormView
 from flag_quest.additional_function import (context_generator,
                                             correct_answer_collector,
                                             get_country_info,
-                                            options_generator,
                                             save_reply_of_user,
                                             total_result_calculator)
 from flag_quest.constants import CONTINENTS
@@ -77,21 +76,26 @@ class GamePage(FormView):
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
     continent = None
-    question = None
-    form_class = None
+    question_set = None
+    form_class = AnswerForm
     correct_answer = None
     success_url = "/"
 
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs):
         self.continent = self.kwargs.get("continent_name")
-        self.question = context_generator("flag", "country", self.continent)
-        self.form_class = AnswerForm(options=options_generator(self.question))
+        self.question_set = context_generator("flag", "country", self.continent)
+        self.form_class = AnswerForm(
+            options=self.question_set['options'])
 
         context = {
-            "question": self.question,
+            "question": self.question_set,
             "form": self.form_class,
             "continent": self.continent,
-            "correct_answer": correct_answer_collector(self.question),
+            "correct_answer": correct_answer_collector(self.question_set),
         }
         return context
 
