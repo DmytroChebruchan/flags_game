@@ -97,8 +97,8 @@ def correct_answer_collector(question):
         return None
 
     for answer in question["options"]:
-        if answer[1] == "correct":
-            return answer[0]
+        if answer[0] == "correct":
+            return answer[1]
 
     return "no correct answer is detected"
 
@@ -115,8 +115,8 @@ def question_set_generator(required_param, options_type, continent_name):
         correct_answer_country.flag_picture)
     correct_answer = "" if options_type != "country" else correct_answer_country.name
 
-    options = [(correct_answer, "correct")]
-    options.extend((country.name, "wrong") for country in countries[1:])
+    options = [("correct", correct_answer)]
+    options.extend(("wrong", country.name) for country in countries[1:])
 
     return {"countries_item": countries_item,
             "options": get_shuffled_list(options)}
