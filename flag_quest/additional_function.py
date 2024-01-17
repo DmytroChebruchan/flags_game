@@ -63,12 +63,6 @@ def get_shuffled_list(input_list):
     return random.sample(input_list, len(input_list))
 
 
-def options_generator(question):
-    if question:
-        return [(option[0], option[0]) for option in question["options"]]
-    return []
-
-
 def adding_correct_answers(context):
     answers_context = context["object_list"]
     flags = [answer.flag_picture for answer in answers_context]
@@ -115,15 +109,17 @@ def context_generator(required_param, options_type, continent_name):
     if not countries:
         return None
 
-    country_question = countries[0]
+    correct_answer_country = countries[0]
 
-    question = "" if required_param != "flag" else country_question.flag_picture
-    correct_answer = "" if options_type != "country" else country_question.name
+    countries_item = "" if required_param != "flag" else (
+        correct_answer_country.flag_picture)
+    correct_answer = "" if options_type != "country" else correct_answer_country.name
 
     options = [(correct_answer, "correct")]
     options.extend((country.name, "wrong") for country in countries[1:])
 
-    return {"question": question, "options": get_shuffled_list(options)}
+    return {"countries_item": countries_item,
+            "options": get_shuffled_list(options)}
 
 
 def country_by_flag(flag_picture):
