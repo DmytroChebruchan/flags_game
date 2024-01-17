@@ -34,9 +34,10 @@
                             <input type="radio" class="btn-check"
                                    name="selected_country"
                                    id="btnradio{{ forloop.counter }}"
-                                   value="{{ option.0 }}" autocomplete="off">
+                                   value="{{ option.1 }}" autocomplete="off">
                             <label class="btn btn-outline-primary"
-                                   for="btnradio{{ forloop.counter }}">{{ option.0 }}</label>
+                                   for="btnradio{{ forloop.counter }}">
+                                {{ option.1 }}</label>
                         {% endfor %}
 
                     </div>
