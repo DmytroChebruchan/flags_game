@@ -130,24 +130,6 @@ def country_by_flag(flag_picture):
         return "Country not found"
 
 
-def save_reply_of_user(returned_request):
-    # fix below
-    try:
-        your_answer = returned_request["selected_country"]
-    except KeyError:
-        your_answer = ""
-
-    correct_answer = country_by_flag(returned_request["flag_picture"])
-
-    answer = Answer(
-        flag_picture=returned_request["flag_picture"],
-        your_answer=your_answer,
-        correct_answer=correct_answer,
-        is_correct=True if correct_answer == your_answer else False,
-    )
-    answer.save()
-
-
 def total_result_calculator():
     answers = Answer.objects.all().count()
     correct_answers = Answer.objects.filter(is_correct=True).count()
