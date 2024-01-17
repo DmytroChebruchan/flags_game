@@ -74,10 +74,9 @@ class ResultsCountries(ListView):
 
 
 class GamePage(FormView):
-    model = CountryInfo
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
-    continent = "Europe"
+    continent = None
     question = None
     form_class = None
     correct_answer = None
