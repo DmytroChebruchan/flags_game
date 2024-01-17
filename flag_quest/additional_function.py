@@ -8,7 +8,7 @@ from flag_quest.models import Answer, Continent, CountryInfo
 
 
 def countries_generator(
-    continent: Optional[str] = None,
+        continent: Optional[str] = None,
 ) -> Union[List[CountryInfo], None]:
     """
     Generates a set of unique country objects for quiz questions.
@@ -28,7 +28,8 @@ def countries_generator(
     all_countries = CountryInfo.objects.all()
 
     # Retrieve the list of used countries from the Answer model
-    used_countries = Answer.objects.all().values_list("correct_answer", flat=True)
+    used_countries = Answer.objects.all().values_list("correct_answer",
+                                                      flat=True)
 
     # Exclude used countries from the list of all countries
     filtered_countries = all_countries.exclude(name__in=used_countries)
@@ -44,7 +45,8 @@ def countries_generator(
 
         # Return a list of country objects from the specified continent
         return list(
-            filtered_countries.filter(continent_1_id=continent_object).order_by("?")[:5]
+            filtered_countries.filter(continent_1_id=continent_object).order_by(
+                "?")[:5]
         )
 
     # If no specific continent is specified, randomly choose a continent
@@ -52,7 +54,8 @@ def countries_generator(
 
     # Return a list of country objects from the randomly chosen continent
     return list(
-        filtered_countries.filter(continent_1_id=random_continent).order_by("?")[:5]
+        filtered_countries.filter(continent_1_id=random_continent).order_by(
+            "?")[:5]
     )
 
 
@@ -63,7 +66,7 @@ def get_shuffled_list(input_list):
 def options_generator(question):
     if question:
         return [(option[0], option[0]) for option in question["options"]]
-    return None
+    return []
 
 
 def adding_correct_answers(context):
