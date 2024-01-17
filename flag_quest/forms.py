@@ -11,10 +11,11 @@ class AnswerForm(forms.ModelForm):
         fields = ["flag_picture", "your_answer"]
 
     def __init__(self, options=None, *args, **kwargs):
-        self.options = options if options else []
+        if options:
+            self.options = options
         super(AnswerForm, self).__init__(*args, **kwargs)
         self.fields["selected_country"] = forms.ChoiceField(
-            choices=self.options + [("unknown", "I do not know")],
+            choices=self.options,
             widget=forms.RadioSelect(),
             required=True,
         )
