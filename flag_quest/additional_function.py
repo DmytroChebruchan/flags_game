@@ -103,7 +103,7 @@ def correct_answer_collector(question):
     return "no correct answer is detected"
 
 
-def context_generator(required_param, options_type, continent_name):
+def question_set_generator(required_param, options_type, continent_name):
     countries = countries_generator(continent_name)
 
     if not countries:

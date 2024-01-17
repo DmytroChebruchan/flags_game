@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import FormView
 
-from flag_quest.additional_function import (context_generator,
+from flag_quest.additional_function import (question_set_generator,
                                             correct_answer_collector,
                                             get_country_info,
                                             save_reply_of_user,
@@ -75,7 +75,6 @@ class ResultsCountries(ListView):
 class GamePage(FormView):
     context_object_name = "countries"
     template_name = "flag_quest/flag_quest.html"
-    continent = None
     question_set = None
     form_class = AnswerForm
     correct_answer = None
@@ -86,26 +85,30 @@ class GamePage(FormView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        self.continent = self.kwargs.get("continent_name")
-        self.question_set = context_generator("flag", "country", self.continent)
+        if self.question_set is None:
+            return super().get_context_data(**kwargs)
+
+        self.question_set = question_set_generator("flag",
+                                                   "country",
+                                                   self.continent)
         self.form_class = AnswerForm(
             options=self.question_set['options'])
 
         context = {
             "question": self.question_set,
             "form": self.form_class,
-            "continent": self.continent,
+            "continent": self.kwargs.get("continent_name"),
             "correct_answer": correct_answer_collector(self.question_set),
         }
         return context
 
     def post(self, request, **kwargs):
-        self.continent = self.kwargs.get("continent_name")
         returned_request = request.POST
         save_reply_of_user(returned_request)
-        redirect_url = reverse("game",
-                               kwargs={"continent_name": self.continent})
         time.sleep(2)
+        redirect_url = reverse("game",
+                               kwargs={"continent_name":
+                                           self.kwargs.get("continent_name")})
         return redirect(redirect_url)
 
 
