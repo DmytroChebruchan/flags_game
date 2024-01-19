@@ -12,8 +12,7 @@ class CountryInfo(models.Model):
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
     meaning_of_flag = models.CharField(max_length=1200)
-    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING,
-                                    null=True)
+    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING, null=True)
 
     weight = models.IntegerField(default=4, null=True)
 
@@ -30,9 +29,7 @@ class Answer(models.Model):
     def __str__(self):
         return f"{self.your_answer}"
 
-    def save_reply(self, returned_request):
-        self.your_answer = returned_request["selected_country"]
-        self.flag_picture = returned_request["flag_picture"]
+    def save_reply(self):
         self.answer_checker()
         self.save()
 
