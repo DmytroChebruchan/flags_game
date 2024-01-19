@@ -2,14 +2,15 @@ import time
 
 from django.http import Http404
 from django.shortcuts import redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView
 
-from flag_quest.additional_function import (question_set_generator,
-                                            correct_answer_collector,
-                                            get_country_info,
-                                            total_result_calculator)
+from flag_quest.additional_function import (
+    get_country_info,
+    question_set_generator,
+    total_result_calculator,
+)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
@@ -28,7 +29,6 @@ class AboutView(TemplateView):
     template_name = "about.html"
 
 
-# Create your views here.
 class ListCounties(ListView):
     model = CountryInfo
     template_name = "flag_quest/list_of_countries.html"
@@ -71,47 +71,67 @@ class ResultsCountries(ListView):
             return redirect("results")
 
 
-class GamePage(FormView):
-    context_object_name = "countries"
-    template_name = "flag_quest/flag_quest.html"
-    question_set = None
+class GamePage(CreateView):
+    model = Answer
     form_class = AnswerForm
-    success_url = "/"
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        print('Hola')
-        return super().form_invalid(form)
+    success_url = reverse_lazy("game")
+    template_name = "flag_quest/flag_quest.html"
 
     def get_context_data(self, **kwargs):
-        if self.question_set is not None:
-            return super().get_context_data(**kwargs)
+        continent_name = self.kwargs.get("continent_name")
+        question_set = question_set_generator("flag", continent_name)
 
-        self.question_set = question_set_generator("flag",
-                                                   "country",
-                                                   self.kwargs.get(
-                                                       "continent_name"))
-        self.form_class = AnswerForm(
-            options=self.question_set['options'])
+        form = AnswerForm()
+        form.set_params(question_set)
 
-        context = {
-            "question": self.question_set,
-            "form": self.form_class,
-            "continent": self.kwargs.get("continent_name"),
-            "correct_answer": correct_answer_collector(self.question_set),
-        }
+        kwargs["form"] = form
+        context = super().get_context_data(
+            question_set=question_set,
+            continent=continent_name,
+            **kwargs
+        )
         return context
 
-    def post(self, request, **kwargs):
-        answer = Answer()
-        answer.save_reply(request.POST)
-        time.sleep(2)
-        kwargs = {"continent_name": self.kwargs.get("continent_name")}
-        redirect_url = reverse("game", kwargs=kwargs)
-        return redirect(redirect_url)
+    def form_valid(self, form):
+        answer = form.save(commit=False)
+        answer.save_reply()
+        time.sleep(5)
+        return super().form_valid(form)
+
+
+# class GamePage(FormView):
+#     context_object_name = "countries"
+#     template_name = "flag_quest/flag_quest.html"
+#     question_set = None
+#     form_class = AnswerForm
+#     success_url = "/"
+#
+#     def get_context_data(self, **kwargs):
+#         if self.question_set is not None:
+#             return super().get_context_data(**kwargs)
+#
+#         self.question_set = question_set_generator("flag",
+#                                                    "country",
+#                                                    self.kwargs.get(
+#                                                        "continent_name"))
+#         self.form_class = AnswerForm(
+#             options=self.question_set['options'])
+#
+#         context = {
+#             "question": self.question_set,
+#             "form": self.form_class,
+#             "continent": self.kwargs.get("continent_name"),
+#             "correct_answer": correct_answer_collector(self.question_set),
+#         }
+#         return context
+#
+#     def post(self, request, **kwargs):
+#         answer = Answer()
+#         answer.save_reply(request.POST)
+#         time.sleep(2)
+#         kwargs = {"continent_name": self.kwargs.get("continent_name")}
+#         redirect_url = reverse("game", kwargs=kwargs)
+#         return redirect(redirect_url)
 
 
 class CountryDetailsView(DetailView):
