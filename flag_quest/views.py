@@ -8,7 +8,6 @@ from django.views.generic.edit import CreateView
 
 from flag_quest.additional_function import (
     get_country_info,
-    question_set_generator,
     total_result_calculator, QuestionSet,
 )
 from flag_quest.constants import CONTINENTS
@@ -26,7 +25,7 @@ class IndexView(TemplateView):
 
 
 class AboutView(TemplateView):
-    template_name = "about.html"
+    template_name = "flag_quest/about.html"
 
 
 class ListCounties(ListView):
@@ -79,24 +78,27 @@ class GamePage(CreateView):
 
     def get_context_data(self, **kwargs):
         continent_name = self.kwargs.get("continent_name")
-        # question_set = question_set_generator("flag", continent_name)
+
         question_set = QuestionSet(continent_name)
         question_set.flag_setter()
-        question_set = question_set.dict_context()
+        additional_context = question_set.dict_context()
 
         form = AnswerForm()
-        form.set_params(question_set)
-
+        form.set_params(additional_context)
         kwargs["form"] = form
+
         context = super().get_context_data(
-            question_set=question_set, continent=continent_name, **kwargs
+            question_set=additional_context, continent=continent_name, **kwargs
         )
         return context
 
     def form_valid(self, form):
         answer = form.save(commit=False)
         answer.save_reply()
-        time.sleep(5)
+        time.sleep(2)
+        continent_name = self.kwargs.get("continent_name")
+        self.success_url = reverse_lazy("game", kwargs={
+            "continent_name": continent_name})
         return super().form_valid(form)
 
 
@@ -113,5 +115,5 @@ class CountryDetailsView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["country"] = get_country_info(context["object"])
+        context["country"] = CountryInfo.objects.get(name=context["object"])
         return context
