@@ -86,9 +86,7 @@ class GamePage(CreateView):
 
         kwargs["form"] = form
         context = super().get_context_data(
-            question_set=question_set,
-            continent=continent_name,
-            **kwargs
+            question_set=question_set, continent=continent_name, **kwargs
         )
         return context
 
@@ -97,41 +95,6 @@ class GamePage(CreateView):
         answer.save_reply()
         time.sleep(5)
         return super().form_valid(form)
-
-
-# class GamePage(FormView):
-#     context_object_name = "countries"
-#     template_name = "flag_quest/flag_quest.html"
-#     question_set = None
-#     form_class = AnswerForm
-#     success_url = "/"
-#
-#     def get_context_data(self, **kwargs):
-#         if self.question_set is not None:
-#             return super().get_context_data(**kwargs)
-#
-#         self.question_set = question_set_generator("flag",
-#                                                    "country",
-#                                                    self.kwargs.get(
-#                                                        "continent_name"))
-#         self.form_class = AnswerForm(
-#             options=self.question_set['options'])
-#
-#         context = {
-#             "question": self.question_set,
-#             "form": self.form_class,
-#             "continent": self.kwargs.get("continent_name"),
-#             "correct_answer": correct_answer_collector(self.question_set),
-#         }
-#         return context
-#
-#     def post(self, request, **kwargs):
-#         answer = Answer()
-#         answer.save_reply(request.POST)
-#         time.sleep(2)
-#         kwargs = {"continent_name": self.kwargs.get("continent_name")}
-#         redirect_url = reverse("game", kwargs=kwargs)
-#         return redirect(redirect_url)
 
 
 class CountryDetailsView(DetailView):
