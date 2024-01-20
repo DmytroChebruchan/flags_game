@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView
 from flag_quest.additional_function import (
     get_country_info,
     question_set_generator,
-    total_result_calculator,
+    total_result_calculator, QuestionSet,
 )
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
@@ -79,7 +79,10 @@ class GamePage(CreateView):
 
     def get_context_data(self, **kwargs):
         continent_name = self.kwargs.get("continent_name")
-        question_set = question_set_generator("flag", continent_name)
+        # question_set = question_set_generator("flag", continent_name)
+        question_set = QuestionSet(continent_name)
+        question_set.flag_setter()
+        question_set = question_set.dict_context()
 
         form = AnswerForm()
         form.set_params(question_set)
