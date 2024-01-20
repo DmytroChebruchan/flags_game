@@ -35,11 +35,16 @@ class QuestionSet():
     options: List[Tuple[str, str]]
     countries_item: str
 
-    def __init__(self, continent_name: Optional[str] = None):
+    def __init__(self, continent_name: Optional[str] = None,
+                 set_flag: bool = False):
         self.continent_name = continent_name
         self.countries_setter(continent_name)
         self.country = self.countries.first()
         self.options_setter()
+        if set_flag:
+            self.flag_setter()
+        print(f'After flag is setted Country is: {list(self.countries)}')
+        print(f'After flag is setted Country: {self.country.name}')
 
     def countries_setter(self, continent_name: str = None):
         # sorting out used flags

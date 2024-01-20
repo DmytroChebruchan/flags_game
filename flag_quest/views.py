@@ -79,8 +79,7 @@ class GamePage(CreateView):
     def get_context_data(self, **kwargs):
         continent_name = self.kwargs.get("continent_name")
 
-        question_set = QuestionSet(continent_name)
-        question_set.flag_setter()
+        question_set = QuestionSet(continent_name, set_flag=True)
         additional_context = question_set.dict_context()
 
         form = AnswerForm()
