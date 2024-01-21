@@ -6,10 +6,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
-from flag_quest.additional_function import (
-    get_country_info,
-    total_result_calculator, QuestionSet,
-)
+from flag_quest.additional_function import QuestionSet, total_result_calculator
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
@@ -77,18 +74,16 @@ class GamePage(CreateView):
     template_name = "flag_quest/flag_quest.html"
 
     def get_context_data(self, **kwargs):
-        continent_name = self.kwargs.get("continent_name")
-
-        question_set = QuestionSet(continent_name, set_flag=True)
-        additional_context = question_set.dict_context()
+        additional_context = QuestionSet(
+            self.kwargs.get("continent_name"), set_flag=True
+        ).dict_context()
 
         form = AnswerForm()
-        form.set_params(additional_context)
+        form.set_params(additional_context, add_flag=True)
         kwargs["form"] = form
 
-        context = super().get_context_data(
-            question_set=additional_context, continent=continent_name, **kwargs
-        )
+        context = super().get_context_data(question_set=additional_context,
+                                           **kwargs)
         return context
 
     def form_valid(self, form):
@@ -96,8 +91,9 @@ class GamePage(CreateView):
         answer.save_reply()
         time.sleep(2)
         continent_name = self.kwargs.get("continent_name")
-        self.success_url = reverse_lazy("game", kwargs={
-            "continent_name": continent_name})
+        self.success_url = reverse_lazy(
+            "game", kwargs={"continent_name": continent_name}
+        )
         return super().form_valid(form)
 
 
