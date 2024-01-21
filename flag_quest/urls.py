@@ -11,7 +11,7 @@ urlpatterns = [
         name="countries_by_continent",
     ),
     path(
-        "coutry_details/<str:country>",
+        "country_details/<str:country>",
         CountryDetailsView.as_view(),
         name="country_details",
     ),
