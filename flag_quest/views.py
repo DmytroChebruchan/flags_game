@@ -78,18 +78,21 @@ class GamePage(CreateView):
             self.kwargs.get("continent_name"), set_flag=True
         ).dict_context()
 
-        form = AnswerForm()
-        form.set_params(additional_context, add_flag=True)
-        kwargs["form"] = form
+        kwargs["form"] = AnswerForm().set_params(additional_context,
+                                                 add_flag=True)
 
-        context = super().get_context_data(question_set=additional_context,
-                                           **kwargs)
-        return context
+        return super().get_context_data(question_set=additional_context,
+                                        **kwargs)
 
     def form_valid(self, form):
+        # saving answer
         answer = form.save(commit=False)
         answer.save_reply()
-        time.sleep(2)
+
+        # delaying update of page
+        time.sleep(4)
+
+        # saving continent
         continent_name = self.kwargs.get("continent_name")
         self.success_url = reverse_lazy(
             "game", kwargs={"continent_name": continent_name}
