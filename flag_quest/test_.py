@@ -14,8 +14,16 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "index.html")
 
+    def test_results_view(self):
+        response = self.client.get(reverse("results"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "flag_quest/results.html")
+
     # def test_list_countries_view(self):
-    #     response = self.client.get(reverse("list_of_countries"))
+    #     # Update the URL to include the continent parameter
+    #     url = reverse("countries_by_continent", args=["Europe"])
+    #     response = self.client.get(url)
+    #
     #     self.assertEqual(response.status_code, 200)
     #     self.assertTemplateUsed(response, "flag_quest/list_of_countries.html")
     #
