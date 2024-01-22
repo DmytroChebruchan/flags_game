@@ -36,15 +36,15 @@ class ListCounties(ListView):
         continent = self.kwargs.get("continent")
         if continent and continent != "All Continents":
             revised_queryset = base_queryset.order_by("weight").filter(
-                continent__iexact=continent)
+                continent__iexact=continent
+            )
             return revised_queryset
 
         return base_queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_continent"] = False if self.kwargs.get(
-            "continent") else True
+        context["show_continent"] = False if self.kwargs.get("continent") else True
         context["continent"] = self.kwargs.get("continent")
         if context["continent"]:
             print(self.kwargs.get("continent") in CONTINENTS)
@@ -81,11 +81,9 @@ class GamePage(CreateView):
             self.kwargs.get("continent_name"), set_flag=True
         ).dict_context()
 
-        kwargs["form"] = AnswerForm().set_params(additional_context,
-                                                 add_flag=True)
+        kwargs["form"] = AnswerForm().set_params(additional_context, add_flag=True)
 
-        return super().get_context_data(question_set=additional_context,
-                                        **kwargs)
+        return super().get_context_data(question_set=additional_context, **kwargs)
 
     def form_valid(self, form):
         # saving answer
