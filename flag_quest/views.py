@@ -7,8 +7,8 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
 from flag_quest.additional_function import (QuestionSet,
-                                            total_result_calculator,
-                                            add_numbers_to_countries)
+                                            add_numbers_to_countries,
+                                            total_result_calculator)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
@@ -48,7 +48,7 @@ class ListCounties(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        add_numbers_to_countries(self.paginate_by, context, 'countries')
+        add_numbers_to_countries(self.paginate_by, context, "countries")
 
         context["continent"] = self.kwargs.get("continent")
         context["show_continent"] = False if context["continent"] else True
@@ -68,7 +68,7 @@ class ResultsCountries(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        add_numbers_to_countries(self.paginate_by, context, 'results')
+        add_numbers_to_countries(self.paginate_by, context, "results")
         context["total_result"] = total_result_calculator()
         return context
 
@@ -89,11 +89,9 @@ class GamePage(CreateView):
             self.kwargs.get("continent_name"), set_flag=True
         ).dict_context()
 
-        kwargs["form"] = AnswerForm().set_params(additional_context,
-                                                 add_flag=True)
+        kwargs["form"] = AnswerForm().set_params(additional_context, add_flag=True)
 
-        return super().get_context_data(question_set=additional_context,
-                                        **kwargs)
+        return super().get_context_data(question_set=additional_context, **kwargs)
 
     def form_valid(self, form):
         # saving answer
