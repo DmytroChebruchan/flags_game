@@ -13,6 +13,9 @@ migrate:
 runserver:
 	$(MANAGE_PY) runserver
 
+test:
+	$(MANAGE_PY) test tests
+
 # Shortcut aliases
 mm: makemigrations
 m: migrate

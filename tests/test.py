@@ -24,6 +24,7 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "flag_quest/results.html")
 
     def test_game_page_view_get(self):
-        response = self.client.get(reverse("game", kwargs={"continent_name": "Europe"}))
+        response = self.client.get(
+            reverse("game", kwargs={"continent_name": "Europe"}))
         self.assertEqual(response.status_code, 200)
         # self.assertTemplateUsed(response, 'flag_quest/flag_quest.html')
