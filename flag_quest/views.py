@@ -6,7 +6,9 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
-from flag_quest.additional_function import QuestionSet, total_result_calculator
+from flag_quest.additional_function import (QuestionSet,
+                                            total_result_calculator,
+                                            add_numbers_to_countries)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
@@ -29,6 +31,7 @@ class ListCounties(ListView):
     model = CountryInfo
     template_name = "flag_quest/list_of_countries.html"
     context_object_name = "countries"
+    paginate_by = 20
 
     def get_queryset(self):
         base_queryset = super().get_queryset()
@@ -44,9 +47,12 @@ class ListCounties(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_continent"] = False if self.kwargs.get(
-            "continent") else True
+
+        add_numbers_to_countries(self.paginate_by, context)
+
         context["continent"] = self.kwargs.get("continent")
+        context["show_continent"] = False if context["continent"] else True
+
         if context["continent"]:
             context["continent_description"] = Continent.objects.get(
                 name=self.kwargs.get("continent")
@@ -58,6 +64,7 @@ class ResultsCountries(ListView):
     model = Answer
     template_name = "flag_quest/results.html"
     context_object_name = "results"
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

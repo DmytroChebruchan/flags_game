@@ -33,7 +33,7 @@
         <tbody>
         {% for country in countries %}
             <tr class="height_73">
-                <td>{{ forloop.counter }}</td>
+                <td>{{ country.counter }}</td>
                 <td>
                     <a href="/country_details/{{ country.name }}">{{ country.name }}</a>
                 </td>
@@ -52,6 +52,27 @@
         {% endfor %}
         </tbody>
     </table>
+    
+    {% if is_paginated %}
+      <nav aria-label="Page navigation container">
+          <ul class="pagination justify-content-center">
+              {% if page_obj.has_previous %}
+                  <li><a href="?page=1" class="page-link" title="First Page">«« FIRST</a></li>
+                  <li><a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a></li>
+              {% endif %}
+              
+              <!-- Display current page number -->
+              <li class="page-item active"><span class="page-link">{{ page_obj.number }} <span class="sr-only">(current)</span></span></li>
+    
+              {% if page_obj.has_next %}
+                  <li><a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a></li>
+                  <li><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link" title="Last Page">LAST »»</a></li>
+              {% endif %}
+          </ul>
+      </nav>
+    {% endif %}
+
+
     {% include 'footer.html' %}
 </div>
 </body>
