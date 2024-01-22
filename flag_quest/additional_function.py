@@ -81,11 +81,11 @@ def total_result_calculator():
     return [correct_answers, answers]
 
 
-def add_numbers_to_countries(paginate_by, context):
+def add_numbers_to_countries(paginate_by, context, el_name):
     page_number = context[
         'page_obj'].number if 'page_obj' in context else 1
     # Calculate the counter for each country
     counter_start = (page_number - 1) * paginate_by
-    for i, country in enumerate(context['countries'], start=counter_start
-                                                            + 1):
+    for i, country in enumerate(context[el_name], start=counter_start
+                                                        + 1):
         country.counter = i

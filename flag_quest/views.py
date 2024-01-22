@@ -48,7 +48,7 @@ class ListCounties(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        add_numbers_to_countries(self.paginate_by, context)
+        add_numbers_to_countries(self.paginate_by, context, 'countries')
 
         context["continent"] = self.kwargs.get("continent")
         context["show_continent"] = False if context["continent"] else True
@@ -64,10 +64,11 @@ class ResultsCountries(ListView):
     model = Answer
     template_name = "flag_quest/results.html"
     context_object_name = "results"
-    paginate_by = 20
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        add_numbers_to_countries(self.paginate_by, context, 'results')
         context["total_result"] = total_result_calculator()
         return context
 
