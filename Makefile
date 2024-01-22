@@ -14,7 +14,8 @@ runserver:
 	$(MANAGE_PY) runserver
 
 test:
-	$(MANAGE_PY) test tests
+	export DJANGO_SETTINGS_MODULE=flags_game_site.settings
+	pytest
 
 # Shortcut aliases
 mm: makemigrations
