@@ -13,7 +13,8 @@ def get_shuffled_list(input_list):
 
 def avail_countries_generator():
     all_countries = CountryInfo.objects.all()
-    used_countries = Answer.objects.all().values_list("correct_answer", flat=True)
+    used_countries = Answer.objects.all().values_list("correct_answer",
+                                                      flat=True)
     return all_countries.exclude(name__in=used_countries)
 
 
@@ -33,7 +34,8 @@ class QuestionSet:
     options: List[Tuple[str, str]]
     countries_item: str
 
-    def __init__(self, continent_name: Optional[str] = None, set_flag: bool = False):
+    def __init__(self, continent_name: Optional[str] = None,
+                 set_flag: bool = False):
         self.continent_name = continent_name
         self.countries_setter(continent_name)
         self.country = self.countries[0]
@@ -47,7 +49,8 @@ class QuestionSet:
         country_ids = filtered_countries.filter(
             continent_1_id=continent_object
         ).values_list("id", flat=True)
-        random_country_ids = random.sample(list(country_ids), min(5, len(country_ids)))
+        random_country_ids = random.sample(list(country_ids),
+                                           min(5, len(country_ids)))
         self.countries = CountryInfo.objects.filter(id__in=random_country_ids)
 
     def flag_setter(self):
