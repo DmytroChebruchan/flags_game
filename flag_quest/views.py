@@ -89,11 +89,13 @@ class GamePage(CreateView):
             self.kwargs.get("continent_name"), set_flag=True
         ).dict_context()
 
-        kwargs["form"] = AnswerForm().set_params(additional_context,
-                                                 add_flag=True)
+        kwargs["form"] = AnswerForm().set_params(
+            additional_context, add_flag=True
+        )
 
-        return super().get_context_data(question_set=additional_context,
-                                        **kwargs)
+        return super().get_context_data(
+            question_set=additional_context, **kwargs
+        )
 
     def form_valid(self, form):
         # saving answer

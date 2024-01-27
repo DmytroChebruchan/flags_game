@@ -12,7 +12,9 @@ class CountryInfo(models.Model):
     capital = models.CharField(max_length=200, null=True)
     continent = models.CharField(max_length=200, null=True)
     meaning_of_flag = models.CharField(max_length=1200)
-    continent_1 = models.ForeignKey(Continent, on_delete=models.DO_NOTHING, null=True)
+    continent_1 = models.ForeignKey(
+        Continent, on_delete=models.DO_NOTHING, null=True
+    )
 
     weight = models.IntegerField(default=4, null=True)
 
@@ -36,4 +38,6 @@ class Answer(models.Model):
     def answer_checker(self):
         country = CountryInfo.objects.get(flag_picture=self.flag_picture)
         self.correct_answer = country.name
-        self.is_correct = True if self.correct_answer == self.your_answer else False
+        self.is_correct = (
+            True if self.correct_answer == self.your_answer else False
+        )
