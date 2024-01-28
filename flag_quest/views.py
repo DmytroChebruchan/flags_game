@@ -6,9 +6,11 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
-from flag_quest.additional_functions import (QuestionSet,
-                                             add_numbers_to_countries,
-                                             total_result_calculator)
+from flag_quest.additional_functions import (
+    QuestionSet,
+    add_numbers_to_countries,
+    total_result_calculator,
+)
 from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
