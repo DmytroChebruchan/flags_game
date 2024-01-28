@@ -2,6 +2,7 @@ from django.http import Http404
 from django.test import Client, TestCase
 from django.urls import reverse
 
+from flag_quest.forms import AnswerForm
 from flag_quest.models import CountryInfo, Answer
 from flag_quest.tests.additional_functions import dummy_answers_creator
 from flag_quest.views import CountryDetailsView
@@ -80,8 +81,6 @@ class TestResultsCountriesView(TestCase):
         self.assertEqual(len(response.context_data["results"]),
                          5)
 
-        # Additional checks on context data if needed
-
     def test_results_countries_post(self):
         # Create sample answer objects
         Answer.objects.create(
@@ -105,3 +104,24 @@ class TestResultsCountriesView(TestCase):
 
         # Check if all Answer objects are deleted
         self.assertEqual(Answer.objects.count(), 0)
+
+
+class TestGamePage(TestCase):
+    def test_game_page_loads_successfully(self):
+        response = self.client.get(reverse("game"))
+        self.assertEqual(response.status_code, 200)
+
+    def test_correct_template_used(self):
+        response = self.client.get(reverse("game"))
+        self.assertEqual(response.template_name[0],
+                         "flag_quest/flag_quest.html")
+
+    def test_context_data(self):
+        continent_name = "Europe"
+
+        response = self.client.get(
+            reverse("game", kwargs={"continent_name": continent_name}))
+
+        # Check if the correct context data is present
+        self.assertIn("form", response.context_data)
+        self.assertIsInstance(response.context_data["question_set"], dict)
