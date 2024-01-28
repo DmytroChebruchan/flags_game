@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "flag_quest.apps.FlagQuestConfig",
+    "flags_game_site"
 ]
 
 MIDDLEWARE = [
