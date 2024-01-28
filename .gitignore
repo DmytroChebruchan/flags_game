@@ -5,4 +5,5 @@ env
 flags_game_site/flag_quest/migrations
 flag_quest/update.py
 .env
+.coverage
 new_env

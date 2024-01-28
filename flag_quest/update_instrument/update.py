@@ -13,7 +13,9 @@ with open(file_path, "r") as file:
 # Get all countries from the database
 countries_from_db = CountryInfo.objects.all()
 
-country_continent_dict = {entry["name"]: entry[field_name] for entry in continents_data}
+country_continent_dict = {
+    entry["name"]: entry[field_name] for entry in continents_data
+}
 
 for country in countries_from_db:
     country_name = country.name
