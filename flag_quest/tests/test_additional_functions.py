@@ -6,9 +6,11 @@ from django.test import TestCase
 django.setup()
 from unittest.mock import patch
 
-from flag_quest.additional_functions import (QuestionSet,
-                                             add_numbers_to_countries,
-                                             total_result_calculator)
+from flag_quest.additional_functions import (
+    QuestionSet,
+    add_numbers_to_countries,
+    total_result_calculator,
+)
 from flag_quest.models import Answer, Continent, CountryInfo
 
 
