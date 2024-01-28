@@ -1,6 +1,8 @@
 from django.test import Client, TestCase
 from django.urls import reverse
 
+from flag_quest.models import CountryInfo
+
 
 class TestViews(TestCase):
     def setUp(self):
@@ -20,3 +22,11 @@ class TestViews(TestCase):
         response = self.client.get(reverse("about"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name[0], "flag_quest/about.html")
+
+    def test_details_view(self):
+        self.country1 = CountryInfo.objects.create(
+            name="test_country"
+        )
+        response = self.client.get(reverse("country_details",
+                                           kwargs={"country": "test_country"}))
+        self.assertEqual(response.status_code, 200)
