@@ -8,6 +8,9 @@ from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
 from flag_quest.tests.additional_functions import dummy_answers_creator
 from flag_quest.views import CountryDetailsView, GamePage
+import django
+
+django.setup()
 
 
 class TestViewsOnPing(TestCase):

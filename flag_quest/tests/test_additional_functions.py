@@ -2,6 +2,9 @@ import os
 from unittest.mock import patch
 
 import django
+
+django.setup()
+
 from django.test import TestCase
 
 from unittest.mock import patch
