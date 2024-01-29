@@ -3,6 +3,7 @@ import time
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
@@ -85,6 +86,7 @@ class GamePage(CreateView):
     form_class = AnswerForm
     success_url = reverse_lazy("game")
     template_name = "flag_quest/flag_quest.html"
+    object = None
 
     def get_context_data(self, **kwargs):
         additional_context = QuestionSet(

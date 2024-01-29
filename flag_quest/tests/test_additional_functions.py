@@ -2,7 +2,9 @@ from unittest.mock import patch
 
 import django
 from django.test import TestCase
+import os
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flags_game_site.settings")
 django.setup()
 from unittest.mock import patch
 
@@ -134,7 +136,6 @@ class TotalResultCalculatorTests(TestCase):
     def test_total_result_calculator(self):
         result = total_result_calculator()
         self.assertEqual([4, 5], result)
-
 
 #
 # class AddNumbersToCountriesTests(TestCase):

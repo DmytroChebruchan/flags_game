@@ -15,7 +15,7 @@ runserver:
 
 test:
 	export DJANGO_SETTINGS_MODULE=flags_game_site.settings
-	pytest flag_quest
+	pytest
 
 # Shortcut aliases
 mm: makemigrations

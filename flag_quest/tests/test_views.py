@@ -3,9 +3,9 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from flag_quest.forms import AnswerForm
-from flag_quest.models import CountryInfo, Answer
+from flag_quest.models import CountryInfo, Answer, Continent
 from flag_quest.tests.additional_functions import dummy_answers_creator
-from flag_quest.views import CountryDetailsView
+from flag_quest.views import CountryDetailsView, GamePage
 
 
 class TestViewsOnPing(TestCase):
@@ -107,6 +107,28 @@ class TestResultsCountriesView(TestCase):
 
 
 class TestGamePage(TestCase):
+    def setUp(self):
+        self.continent = Continent.objects.create(name="Test Continent")
+        self.country = CountryInfo.objects.create(
+            name="Test Country",
+            flag_picture="test_flag.png",
+            continent_1=self.continent,
+            meaning_of_flag="Test meaning of flag",
+        )
+        self.country_1 = CountryInfo.objects.create(
+            name="Test Country 2",
+            flag_picture="test_flag.png",
+            continent_1=self.continent,
+            meaning_of_flag="Test meaning of flag",
+        )
+
+        self.answer = Answer.objects.create(
+            flag_picture="test_flag.png",
+            is_correct=True,
+            your_answer="Test Country",
+            correct_answer="Test Country",
+        )
+
     def test_game_page_loads_successfully(self):
         response = self.client.get(reverse("game"))
         self.assertEqual(response.status_code, 200)
@@ -116,12 +138,22 @@ class TestGamePage(TestCase):
         self.assertEqual(response.template_name[0],
                          "flag_quest/flag_quest.html")
 
-    def test_context_data(self):
-        continent_name = "Europe"
+    def test_get_context_data(self):
+        view = GamePage()
+        view.kwargs = {"continent_name": "Test Continent"}
+        context = view.get_context_data()
 
-        response = self.client.get(
-            reverse("game", kwargs={"continent_name": continent_name}))
+        self.assertIn("question_set", context)
+        self.assertEqual(context["question_set"]["continent_name"],
+                         "Test Continent")
+        self.assertIn("form", context)
 
-        # Check if the correct context data is present
-        self.assertIn("form", response.context_data)
-        self.assertIsInstance(response.context_data["question_set"], dict)
+    # def test_context_data(self):
+    #     continent_name = "Europe"
+    #
+    #     response = self.client.get(
+    #         reverse("game", kwargs={"continent_name": continent_name}))
+    #
+    #     # Check if the correct context data is present
+    #     self.assertIn("form", response.context_data)
+    #     self.assertIsInstance(response.context_data["question_set"], dict)
