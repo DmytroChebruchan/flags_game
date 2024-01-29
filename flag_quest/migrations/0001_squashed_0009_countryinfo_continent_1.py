@@ -72,7 +72,10 @@ class Migration(migrations.Migration):
                 ("flag_picture", models.CharField(max_length=500)),
                 ("capital", models.CharField(max_length=200, null=True)),
                 ("continent", models.CharField(max_length=200, null=True)),
-                ("meaning_of_flag", models.CharField(default="", max_length=1200)),
+                (
+                    "meaning_of_flag",
+                    models.CharField(default="", max_length=1200),
+                ),
                 ("weight", models.IntegerField(default=4, null=True)),
                 (
                     "continent_1",

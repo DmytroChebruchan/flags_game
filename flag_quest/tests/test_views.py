@@ -5,7 +5,7 @@ from django.test import Client, TestCase
 from django.urls import reverse
 
 from flag_quest.forms import AnswerForm
-from flag_quest.models import CountryInfo, Answer, Continent
+from flag_quest.models import Answer, Continent, CountryInfo
 from flag_quest.tests.additional_functions import dummy_answers_creator
 from flag_quest.views import CountryDetailsView, GamePage
 
@@ -74,14 +74,12 @@ class TestResultsCountriesView(TestCase):
         dummy_answers_creator(2)
         response = self.client.get(reverse("results"))
         self.assertTrue("results" in response.context_data)
-        self.assertEqual(len(response.context_data["results"]),
-                         2)
+        self.assertEqual(len(response.context_data["results"]), 2)
 
     def test_few_pages_results_countries_get(self):
         dummy_answers_creator(10)
         response = self.client.get(reverse("results"))
-        self.assertEqual(len(response.context_data["results"]),
-                         5)
+        self.assertEqual(len(response.context_data["results"]), 5)
 
     def test_results_countries_post(self):
         # Create sample answer objects
@@ -89,13 +87,13 @@ class TestResultsCountriesView(TestCase):
             flag_picture="test_flag_picture_1",
             is_correct=True,
             your_answer="correct_answer_1",
-            correct_answer="correct_answer_1"
+            correct_answer="correct_answer_1",
         )
         Answer.objects.create(
             flag_picture="test_flag_picture_2",
             is_correct=False,
             your_answer="incorrect_answer_2",
-            correct_answer="correct_answer_2"
+            correct_answer="correct_answer_2",
         )
 
         # Make POST request to clean answers
@@ -137,8 +135,9 @@ class TestGamePage(TestCase):
 
     def test_correct_template_used(self):
         response = self.client.get(reverse("game"))
-        self.assertEqual(response.template_name[0],
-                         "flag_quest/flag_quest.html")
+        self.assertEqual(
+            response.template_name[0], "flag_quest/flag_quest.html"
+        )
 
     def test_get_context_data(self):
         view = GamePage()
@@ -146,15 +145,17 @@ class TestGamePage(TestCase):
         context = view.get_context_data()
 
         self.assertIn("question_set", context)
-        self.assertEqual(context["question_set"]["continent_name"],
-                         "Test Continent")
+        self.assertEqual(
+            context["question_set"]["continent_name"], "Test Continent"
+        )
         self.assertIn("form", context)
 
     @patch("flag_quest.models.CountryInfo.objects.get")
     def test_form_valid(self, mock_get_country_info):
         # Mock CountryInfo object
-        country_info = CountryInfo(name="Test Country",
-                                   flag_picture="test_flag.jpg")
+        country_info = CountryInfo(
+            name="Test Country", flag_picture="test_flag.jpg"
+        )
         mock_get_country_info.return_value = country_info
 
         # Create a mock question set with options and country item
@@ -170,8 +171,10 @@ class TestGamePage(TestCase):
 
         # Bind the form
         form.is_bound = True
-        form.data = {"your_answer": "Test Country",  # Update the answer format
-                     "flag_picture": "test_flag.jpg"}
+        form.data = {
+            "your_answer": "Test Country",  # Update the answer format
+            "flag_picture": "test_flag.jpg",
+        }
 
         # Create a mock request with required kwargs
         kwargs = {"continent_name": "TestContinent"}
@@ -198,18 +201,24 @@ class TestGamePage(TestCase):
 
 class ListCountriesViewTest(TestCase):
     def setUp(self):
-        self.continent = Continent.objects.create(name="Test Continent",
-                                                  description="Test description")
-        self.continent2 = Continent.objects.create(name="Test Continent 2",
-                                                   description="Test descr 2")
-        self.country = CountryInfo.objects.create(name="Test Country",
-                                                  continent=self.continent)
-        self.country1 = CountryInfo.objects.create(name="Test Country 1",
-                                                   continent=self.continent)
-        self.country2 = CountryInfo.objects.create(name="Test Country 2",
-                                                   continent=self.continent2)
-        self.country3 = CountryInfo.objects.create(name="Test Country 3",
-                                                   continent=self.continent2)
+        self.continent = Continent.objects.create(
+            name="Test Continent", description="Test description"
+        )
+        self.continent2 = Continent.objects.create(
+            name="Test Continent 2", description="Test descr 2"
+        )
+        self.country = CountryInfo.objects.create(
+            name="Test Country", continent=self.continent
+        )
+        self.country1 = CountryInfo.objects.create(
+            name="Test Country 1", continent=self.continent
+        )
+        self.country2 = CountryInfo.objects.create(
+            name="Test Country 2", continent=self.continent2
+        )
+        self.country3 = CountryInfo.objects.create(
+            name="Test Country 3", continent=self.continent2
+        )
 
     def test_view_returns_correct_template(self):
         response = self.client.get(reverse("all_countries"))
@@ -223,8 +232,12 @@ class ListCountriesViewTest(TestCase):
 
     def test_queryset_filtering_by_continent(self):
         context_data = self.client.get(
-            reverse("countries_by_continent",
-                    kwargs={"continent": self.continent.name})).context_data
+            reverse(
+                "countries_by_continent",
+                kwargs={"continent": self.continent.name},
+            )
+        ).context_data
         self.assertEqual("Test Continent", context_data["continent"])
-        self.assertEqual('Test description',
-                         context_data["continent_description"])
+        self.assertEqual(
+            "Test description", context_data["continent_description"]
+        )
