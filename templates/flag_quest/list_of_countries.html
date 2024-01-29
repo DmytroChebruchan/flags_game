@@ -24,9 +24,7 @@
             <th>#</th>
             <th>Country</th>
             <th>Capital City</th>
-            {% if show_continent %}
-                <th>Continent</th>
-            {% endif %}
+            <th>Continent</th>
             <th>Flag</th>
         </tr>
         </thead>
@@ -38,11 +36,9 @@
                     <a href="/country_details/{{ country.name }}">{{ country.name }}</a>
                 </td>
                 <td>{{ country.capital }}</td>
-                {% if show_continent %}
-                    <td>
-                        <a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a>
-                    </td>
-                {% endif %}
+                <td>
+                    <a href="/list_of_countries/{{ country.continent }}">{{ country.continent }}</a>
+                </td>
                 <td class="small-img-td">
                     <img src="{{ country.flag_picture }}"
                          alt="{{ country.name }} Flag" class="flag-img">

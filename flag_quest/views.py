@@ -3,7 +3,6 @@ import time
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView
 
@@ -49,18 +48,16 @@ class ListCounties(ListView):
         return base_queryset
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context_data = super().get_context_data(**kwargs)
 
-        add_numbers_to_countries(self.paginate_by, context, "countries")
+        add_numbers_to_countries(self.paginate_by, context_data, "countries")
 
-        context["continent"] = self.kwargs.get("continent")
-        context["show_continent"] = False if context["continent"] else True
+        context_data["continent"] = self.kwargs.get("continent")
 
-        if context["continent"]:
-            context["continent_description"] = Continent.objects.get(
-                name=self.kwargs.get("continent")
-            ).description
-        return context
+        if context_data["continent"]:
+            continent = Continent.objects.get(name=context_data["continent"])
+            context_data["continent_description"] = continent.description
+        return context_data
 
 
 class ResultsCountries(ListView):
