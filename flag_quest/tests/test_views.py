@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.http import Http404
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -148,12 +150,81 @@ class TestGamePage(TestCase):
                          "Test Continent")
         self.assertIn("form", context)
 
-    # def test_context_data(self):
-    #     continent_name = "Europe"
-    #
-    #     response = self.client.get(
-    #         reverse("game", kwargs={"continent_name": continent_name}))
-    #
-    #     # Check if the correct context data is present
-    #     self.assertIn("form", response.context_data)
-    #     self.assertIsInstance(response.context_data["question_set"], dict)
+    @patch("flag_quest.models.CountryInfo.objects.get")
+    def test_form_valid(self, mock_get_country_info):
+        # Mock CountryInfo object
+        country_info = CountryInfo(name="Test Country",
+                                   flag_picture="test_flag.jpg")
+        mock_get_country_info.return_value = country_info
+
+        # Create a mock question set with options and country item
+        question_set = {
+            "options": [("Test Country", "Test Country")],
+            # Update the option format
+            "countries_item": "Test Country",  # Update the country item format
+        }
+
+        # Initialize form and set parameters
+        form = AnswerForm()
+        form.set_params(question_set, add_flag=True)
+
+        # Bind the form
+        form.is_bound = True
+        form.data = {"your_answer": "Test Country",  # Update the answer format
+                     "flag_picture": "test_flag.jpg"}
+
+        # Create a mock request with required kwargs
+        kwargs = {"continent_name": "TestContinent"}
+        request = self.client.post(reverse("game"), kwargs=kwargs)
+
+        # Set up the view
+        view = GamePage()
+        view.request = request
+        view.kwargs = kwargs
+
+        # Test the form_valid method
+        response = view.form_valid(form)
+
+        # Assert that the response is a redirect
+        self.assertTrue(response.url.startswith(reverse("game")))
+        self.assertEqual(response.status_code, 302)
+
+        # Assert that the answer is saved
+        self.assertTrue(Answer.objects.exists())
+        saved_answer = Answer.objects.first()
+        self.assertEqual(saved_answer.correct_answer, country_info.name)
+        self.assertTrue(saved_answer.is_correct)
+
+
+class ListCountriesViewTest(TestCase):
+    def setUp(self):
+        self.continent = Continent.objects.create(name="Test Continent",
+                                                  description="Test description")
+        self.continent2 = Continent.objects.create(name="Test Continent 2",
+                                                   description="Test descr 2")
+        self.country = CountryInfo.objects.create(name="Test Country",
+                                                  continent=self.continent)
+        self.country1 = CountryInfo.objects.create(name="Test Country 1",
+                                                   continent=self.continent)
+        self.country2 = CountryInfo.objects.create(name="Test Country 2",
+                                                   continent=self.continent2)
+        self.country3 = CountryInfo.objects.create(name="Test Country 3",
+                                                   continent=self.continent2)
+
+    def test_view_returns_correct_template(self):
+        response = self.client.get(reverse("all_countries"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "flag_quest/list_of_countries.html")
+
+    def test_view_context_contains_expected_data(self):
+        response = self.client.get(reverse("all_countries"))
+        self.assertIn("countries", response.context)
+        self.assertIn("continent", response.context)
+
+    def test_queryset_filtering_by_continent(self):
+        context_data = self.client.get(
+            reverse("countries_by_continent",
+                    kwargs={"continent": self.continent.name})).context_data
+        self.assertEqual("Test Continent", context_data["continent"])
+        self.assertEqual('Test description',
+                         context_data["continent_description"])
