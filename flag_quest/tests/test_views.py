@@ -226,7 +226,8 @@ class ListCountriesViewTest(TestCase):
     def test_view_returns_correct_template(self):
         response = self.client.get(reverse("all_countries"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "flag_quest/list_of_countries.html")
+        self.assertIn("flag_quest/list_of_countries.html",
+                      response.template_name)
 
     def test_view_context_contains_expected_data(self):
         response = self.client.get(reverse("all_countries"))
