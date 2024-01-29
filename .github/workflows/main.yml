@@ -31,4 +31,5 @@ jobs:
 
       - name: Run Pytests
         run: |
+          export DJANGO_SETTINGS_MODULE=flags_game_site.settings
           pytest
