@@ -230,8 +230,8 @@ class ListCountriesViewTest(TestCase):
 
     def test_view_context_contains_expected_data(self):
         response = self.client.get(reverse("all_countries"))
-        self.assertIn("countries", response.context)
-        self.assertIn("continent", response.context)
+        self.assertIn("countries", response.context_data)
+        self.assertIn("continent", response.context_data)
 
     def test_queryset_filtering_by_continent(self):
         context_data = self.client.get(
