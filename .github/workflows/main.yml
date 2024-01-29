@@ -26,5 +26,7 @@ jobs:
       - name: Set up environment and run Pytests
         run: |
           export DJANGO_SETTINGS_MODULE=flags_game_site.settings
-          export PYTHONPATH=$PYTHONPATH:/home/runner/work/flags_game/flags_game  # Adjust path as needed
+          
+      - name: Run pytest
+        run: |
           pytest
