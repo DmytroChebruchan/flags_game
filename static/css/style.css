@@ -1,3 +1,10 @@
+.correct-option {
+    color: #fff;
+    background-color: #198754;
+    border-color: #198754;
+}
+
+
 .img_holder {
     width: 200px;
     height: 70px;

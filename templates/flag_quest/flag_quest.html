@@ -42,9 +42,17 @@
                                    value="{{ option.1 }}" autocomplete="off">
 
                             <label class="btn btn-outline-primary"
-                                   for="btnradio{{ forloop.counter }}">{{ option.1 }}</label>
+                                   for="btnradio{{ forloop.counter }}"
+                                   id="label_{{ forloop.counter }}"
+                            >{{ option.1 }}</label>
                         {% endfor %}
-
+                        {#                            <input type="radio" class="btn-check"#}
+                        {#                                   name="options-outlined"#}
+                        {#                                   id="success-outlined"#}
+                        {#                                   autocomplete="off" checked>#}
+                        {#                            <label class="btn btn-outline-success"#}
+                        {#                                   for="success-outlined">#}
+                        {#                                {{ country_name }}</label>#}
                     </div>
                 </div>
 
@@ -56,12 +64,13 @@
                 <p id="correct-result-text" style="display: none;">Correct
                     answer is:<br/>
                     <span id="correct-result"></span>
-                    <p id="results-additional-info"></p>
+                <p id="results-additional-info"></p>
                 </p>
             </form>
         {% else %}
             <p>There are no more countries of required continent.</p>
         {% endif %}
+
         {% include 'footer.html' %}
     </main>
 </div>
@@ -70,9 +79,22 @@
     document.getElementById('submit').addEventListener('click', function () {
         // Show correct answer
         document.getElementById('correct-result').innerText = "{{ question_set.correct_answer_country }}";
-        document.getElementById('results-additional-info').innerText = 
+        document.getElementById('results-additional-info').innerText =
             "{{ question_set.correct_answer_additional_info }}";
         document.getElementById('correct-result-text').style.display = 'block';
+
+        var correctCountryOption = "{{ question_set.correct_answer_country }}";
+        var options = document.querySelectorAll('input[type="radio"]');
+        options.forEach(function (option) {
+            if (option.value === correctCountryOption) {
+                var lable_id = option.id[option.id.length - 1]
+                console.log(lable_id);
+                document.getElementById('label_' + lable_id).setAttribute
+                ('class', 'btn btn-outline-success correct-option');
+                document.getElementById('label_' + lable_id).setAttribute('for',
+                    'success-outlined');
+            }
+        });
 
     });
 </script>
