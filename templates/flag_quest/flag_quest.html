@@ -79,24 +79,20 @@
     document.getElementById('submit').addEventListener('click', function () {
         // Show correct answer
         document.getElementById('correct-result').innerText = "{{ question_set.correct_answer_country }}";
-        document.getElementById('results-additional-info').innerText =
-            "{{ question_set.correct_answer_additional_info }}";
+        document.getElementById('results-additional-info').innerText = "{{ question_set.correct_answer_additional_info }}";
         document.getElementById('correct-result-text').style.display = 'block';
-
+    
         // Mark correct answer on page
-        var correctCountryOption = "{{ question_set.correct_answer_country }}";
-        var options = document.querySelectorAll('input[type="radio"]');
+        const correctCountryOption = "{{ question_set.correct_answer_country }}";
+        const options = document.querySelectorAll('input[type="radio"]');
         options.forEach(function (option) {
             if (option.value === correctCountryOption) {
-                var lable_id = option.id[option.id.length - 1]
-                console.log(lable_id);
-                document.getElementById('label_' + lable_id).setAttribute
-                ('class', 'btn btn-outline-success correct-option');
-                document.getElementById('label_' + lable_id).setAttribute('for',
-                    'success-outlined');
+                const label_id = option.id.slice(-1); // Extract the last character from option.id
+                const label = document.getElementById('label_' + label_id);
+                label.classList.add('btn', 'btn-outline-success', 'correct-option');
+                label.setAttribute('for', 'success-outlined');
             }
         });
-
     });
 </script>
 
