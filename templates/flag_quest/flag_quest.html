@@ -83,6 +83,7 @@
             "{{ question_set.correct_answer_additional_info }}";
         document.getElementById('correct-result-text').style.display = 'block';
 
+        // Mark correct answer on page
         var correctCountryOption = "{{ question_set.correct_answer_country }}";
         var options = document.querySelectorAll('input[type="radio"]');
         options.forEach(function (option) {
