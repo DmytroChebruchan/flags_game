@@ -1,92 +1,80 @@
 {% include 'base.html' %}
 {% load static %}
 <head>
-    <title>Flag quest</title>
-    <link rel="stylesheet" href='{% static "css/style.css" %}'/>
+   <title>Flag quest</title>
+   <link rel="stylesheet" href='{% static "css/style.css" %}'/>
 </head>
 <body>
-
-<div class="container">
-
-    {% include 'nav_bar.html' %}
-    <main class="margin_15px">
-        <h1>Identify the Country</h1>
-        {% if question_set.continent_name %}
-            <h2 class="h2">Continent: {{ question_set.continent_name }}.</h2>
-        {% endif %}
-        {% if question_set %}
-            <div class="img_holder" style="height: 200px">
-                <img src="{{ question_set.countries_item }}" alt="Flag"
-                     style="max-width: 200px"
-                     class="img-fluid mt-3 mb-3">
+   <div class="container">
+      {% include 'nav_bar.html' %}
+      <main class="margin_15px">
+         <h1>Identify the Country</h1>
+         {% if question_set.continent_name %}
+         <h2 class="h2">Continent: {{ question_set.continent_name }}.</h2>
+         {% endif %}
+         {% if question_set %}
+         <div class="img_holder" style="height: 200px">
+            <img src="{{ question_set.countries_item }}" alt="Flag"
+               style="max-width: 200px"
+               class="img-fluid mt-3 mb-3">
+         </div>
+         <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+               <label>
+               <input type="text" name="flag_picture"
+                  value="{{ question_set.countries_item }}"
+                  hidden="hidden">
+               </label>
+               <div class="btn-group" role="group"
+                  aria-label="Basic radio toggle button group">
+                  {% for option in question_set.options %}
+                  <input type="radio" class="btn-check"
+                     name="your_answer"
+                     id="btnradio{{ forloop.counter }}"
+                     value="{{ option.1 }}" autocomplete="off">
+                  <label class="btn btn-outline-primary"
+                     for="btnradio{{ forloop.counter }}"
+                     id="label_{{ forloop.counter }}"
+                     >{{ option.1 }}</label>
+                  {% endfor %}
+               </div>
             </div>
-
-            <form method="post">
-
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <label>
-                        <input type="text" name="flag_picture"
-                               value="{{ question_set.countries_item }}"
-                               hidden="hidden">
-                    </label>
-
-                    <div class="btn-group" role="group"
-                         aria-label="Basic radio toggle button group">
-
-                        {% for option in question_set.options %}
-                            <input type="radio" class="btn-check"
-                                   name="your_answer"
-                                   id="btnradio{{ forloop.counter }}"
-                                   value="{{ option.1 }}" autocomplete="off">
-
-                            <label class="btn btn-outline-primary"
-                                   for="btnradio{{ forloop.counter }}"
-                                   id="label_{{ forloop.counter }}"
-                            >{{ option.1 }}</label>
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <button type="submit" id="submit" name="check"
-                        class="btn btn-primary">
-                    Submit
-                </button>
-                <br/>
-                <p id="correct-result-text" style="display: none;">Correct
-                    answer is:<br/>
-                    <span id="correct-result"></span>
-                <p id="results-additional-info"></p>
-                </p>
-            </form>
-        {% else %}
-            <p>There are no more countries of required continent.</p>
-        {% endif %}
-
-        {% include 'footer.html' %}
-    </main>
-</div>
-
-<script>
-    document.getElementById('submit').addEventListener('click', function () {
-        // Show correct answer
-        document.getElementById('correct-result').innerText = "{{ question_set.correct_answer_country }}";
-        document.getElementById('results-additional-info').innerText = "{{ question_set.correct_answer_additional_info }}";
-        document.getElementById('correct-result-text').style.display = 'block';
-    
-        // Mark correct answer on page
-        const correctCountryOption = "{{ question_set.correct_answer_country }}";
-        const options = document.querySelectorAll('input[type="radio"]');
-        options.forEach(function (option) {
-            if (option.value === correctCountryOption) {
-                const label_id = option.id.slice(-1); // Extract the last character from option.id
-                const label = document.getElementById('label_' + label_id);
-                label.classList.add('btn', 'btn-outline-success', 'correct-option');
-                label.setAttribute('for', 'success-outlined');
-            }
-        });
-    });
-</script>
-
+            <button type="submit" id="submit" name="check"
+               class="btn btn-primary">
+            Submit
+            </button>
+            <br/>
+            <p id="correct-result-text" style="display: none;">Correct
+               answer is:<br/>
+               <span id="correct-result"></span>
+            <p id="results-additional-info"></p>
+            </p>
+         </form>
+         {% else %}
+         <p>There are no more countries of required continent.</p>
+         {% endif %}
+         {% include 'footer.html' %}
+      </main>
+   </div>
+   <script>
+      document.getElementById('submit').addEventListener('click', function () {
+          // Show correct answer
+          document.getElementById('correct-result').innerText = "{{ question_set.correct_answer_country }}";
+          document.getElementById('results-additional-info').innerText = "{{ question_set.correct_answer_additional_info }}";
+          document.getElementById('correct-result-text').style.display = 'block';
+      
+          // Mark correct answer on page
+          const correctCountryOption = "{{ question_set.correct_answer_country }}";
+          const options = document.querySelectorAll('input[type="radio"]');
+          options.forEach(function (option) {
+              if (option.value === correctCountryOption) {
+                  const label_id = option.id.slice(-1); // Extract the last character from option.id
+                  const label = document.getElementById('label_' + label_id);
+                  label.classList.add('btn', 'btn-outline-success', 'correct-option');
+                  label.setAttribute('for', 'success-outlined');
+              }
+          });
+      });
+   </script>
 </body>
