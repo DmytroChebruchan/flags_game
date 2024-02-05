@@ -1,5 +1,6 @@
 from unittest.mock import patch
 
+import django
 from django.http import Http404
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -8,7 +9,6 @@ from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
 from flag_quest.tests.additional_functions import dummy_answers_creator
 from flag_quest.views import CountryDetailsView, GamePage
-import django
 
 django.setup()
 
@@ -226,8 +226,9 @@ class ListCountriesViewTest(TestCase):
     def test_view_returns_correct_template(self):
         response = self.client.get(reverse("all_countries"))
         self.assertEqual(response.status_code, 200)
-        self.assertIn("flag_quest/list_of_countries.html",
-                      response.template_name)
+        self.assertIn(
+            "flag_quest/list_of_countries.html", response.template_name
+        )
 
     def test_view_context_contains_expected_data(self):
         response = self.client.get(reverse("all_countries"))
