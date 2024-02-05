@@ -5,15 +5,11 @@ import django
 
 django.setup()
 
-from django.test import TestCase
-
 from unittest.mock import patch
 
-from flag_quest.additional_functions import (
-    QuestionSet,
-    add_numbers_to_countries,
-    total_result_calculator,
-)
+from django.test import TestCase
+
+from flag_quest.additional_functions import QuestionSet, total_result_calculator
 from flag_quest.models import Answer, Continent, CountryInfo
 
 
@@ -137,6 +133,7 @@ class TotalResultCalculatorTests(TestCase):
     def test_total_result_calculator(self):
         result = total_result_calculator()
         self.assertEqual([4, 5], result)
+
 
 #
 # class AddNumbersToCountriesTests(TestCase):
