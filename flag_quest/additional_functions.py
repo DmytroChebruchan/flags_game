@@ -11,12 +11,15 @@ def get_shuffled_list(input_list):
     return random.sample(input_list, len(input_list))
 
 
-def avail_countries_generator():
-    all_countries = CountryInfo.objects.all()
+def avail_countries_generator(continent_name):
+    countries_on_continent = CountryInfo.objects.filter(
+        continent=continent_name
+    ).values_list("name", flat=True)
+
     used_countries = Answer.objects.all().values_list(
         "correct_answer", flat=True
     )
-    return all_countries.exclude(name__in=used_countries)
+    return countries_on_continent.exclude(name__in=used_countries)
 
 
 def continent_getter(continent_name, filtered_countries):
@@ -40,13 +43,25 @@ class QuestionSet:
     ):
         self.continent_name = continent_name
         self.countries_setter(continent_name)
-        self.country = self.countries[0]
+        self.country_setter()
+        self.country_setter()
+
         self.options_setter()
         if set_flag:
             self.flag_setter()
 
+    def country_setter(self):
+        self.country = (
+            self.countries[0] if self.countries else CountryInfo(name="None")
+        )
+
     def countries_setter(self, continent_name: str = None):
-        filtered_countries = avail_countries_generator()
+        filtered_countries = avail_countries_generator(continent_name)
+
+        if not filtered_countries:
+            self.countries = CountryInfo.objects.none()
+            return
+
         continent_object = continent_getter(continent_name, filtered_countries)
         country_ids = filtered_countries.filter(
             continent_1_id=continent_object
@@ -57,8 +72,13 @@ class QuestionSet:
         self.countries = CountryInfo.objects.filter(id__in=random_country_ids)
 
     def flag_setter(self):
-        self.countries_item = self.country.flag_picture
-        self.additional_info_generator("meaning_of_flag")
+        if self.country:
+            self.countries_item = (
+                self.country.flag_picture if self.country else None
+            )
+            self.additional_info_generator("meaning_of_flag")
+        else:
+            self.countries_item = self.correct_answer_additional_info = ""
 
     def additional_info_generator(self, requirement: str):
         if requirement == "meaning_of_flag":
