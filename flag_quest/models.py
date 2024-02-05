@@ -38,6 +38,4 @@ class Answer(models.Model):
     def answer_checker(self):
         country = CountryInfo.objects.get(flag_picture=self.flag_picture)
         self.correct_answer = country.name
-        self.is_correct = (
-            True if self.correct_answer == self.your_answer else False
-        )
+        self.is_correct = self.correct_answer == self.your_answer
