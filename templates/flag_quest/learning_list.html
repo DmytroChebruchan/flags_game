@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href='{% static "css/style.css" %}'/>
+    <title>Games to play</title>
+</head>
+<body>
+<div class="container">
+
+    {% include 'nav_bar.html' %}
+    <main class="margin_15px">
+        <h1 class="h1">Continents with countries</h1>
+
+        <h2 class="h2">Learn flags of different countries on each continent</h2>
+
+        <div class="list-group">
+            {% for continent in continents %}
+                <a href="/list_of_countries/{{ continent }}" class="list-group-item
+            list-group-item-action">{{ continent }}</a>
+            {% endfor %}
+        </div>
+    </main>
+    {% include 'footer.html' %}
+</div>
+</body>
+</html>

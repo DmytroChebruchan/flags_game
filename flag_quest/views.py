@@ -25,6 +25,24 @@ class IndexView(TemplateView):
         return context
 
 
+class GameMenuView(TemplateView):
+    template_name = "flag_quest/game_menu.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["continents"] = CONTINENTS
+        return context
+
+
+class CountriesMenuView(TemplateView):
+    template_name = "flag_quest/learning_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["continents"] = CONTINENTS
+        return context
+
+
 class AboutView(TemplateView):
     template_name = "flag_quest/about.html"
 

@@ -2,7 +2,9 @@ from django.urls import path
 
 from .views import (
     AboutView,
+    CountriesMenuView,
     CountryDetailsView,
+    GameMenuView,
     GamePage,
     IndexView,
     ListCounties,
@@ -26,4 +28,6 @@ urlpatterns = [
     path("results", ResultsCountries.as_view(), name="results"),
     path("", IndexView.as_view(), name="index"),
     path("about", AboutView.as_view(), name="about"),
+    path("countries_menu", CountriesMenuView.as_view(), name="countries_menu"),
+    path("games_menu", GameMenuView.as_view(), name="games_menu"),
 ]
