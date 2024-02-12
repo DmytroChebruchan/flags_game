@@ -23,14 +23,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Initialize Django Settings
-        run: |
-          export DJANGO_SETTINGS_MODULE="flags_game_site.settings"
-
-      - name: Trigger Django Initialization
-        run: |
-          python manage.py check  # or any Django management command to trigger initialization
-
       - name: Run PyTest
         run: |
           pytest
