@@ -21,8 +21,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Adjust as needed
-      - name: Run Pytests
+          pip install -r requirements.txt
+
+      - name: Initialize Django
         run: |
           export DJANGO_SETTINGS_MODULE=flags_game_site.settings
+          python manage.py check  # or any Django management command to trigger initialization
+
+      - name: Run PyTest
+        run: |
           pytest
