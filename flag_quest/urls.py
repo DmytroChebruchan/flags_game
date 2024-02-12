@@ -1,15 +1,8 @@
 from django.urls import path
 
-from .views import (
-    AboutView,
-    CountriesMenuView,
-    CountryDetailsView,
-    GameMenuView,
-    GamePage,
-    IndexView,
-    ListCounties,
-    ResultsCountries,
-)
+from .views import (AboutView, CountriesMenuView, CountryDetailsView,
+                    GameMenuView, GamePage, IndexView, ListCounties,
+                    ResultsCountries)
 
 urlpatterns = [
     path("list_of_countries/", ListCounties.as_view(), name="all_countries"),
