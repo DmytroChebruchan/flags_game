@@ -53,3 +53,16 @@ class AnswerModelTest(TestCase):
         self.assertTrue(answer.is_correct)
         self.assertEqual(answer.your_answer, "Test Country")
         self.assertEqual(answer.correct_answer, "Test Country")
+
+    def test_str_representation(self):
+        # Create an instance of the Answer model
+        answer = Answer(
+            flag_picture="example_picture.png",
+            is_correct=True,
+            your_answer="Your answer",
+            correct_answer="Correct answer"
+        )
+
+        # Check if the __str__ method returns the expected string
+        expected_str = "Your answer"
+        self.assertEqual(str(answer), expected_str)

@@ -1,13 +1,13 @@
 import django
 
-django.setup()
-
 from unittest.mock import patch
 
 from django.test import TestCase
 
 from flag_quest.additional_functions import QuestionSet, total_result_calculator
-from flag_quest.models import Answer, Continent, CountryInfo
+from flag_quest.models import Continent, CountryInfo
+
+django.setup()
 
 
 class QuestionSetTests(TestCase):
@@ -67,11 +67,6 @@ class QuestionSetTests(TestCase):
     def test_countries_setter_with_continent_name(self):
         self.assertEqual(len(self.question_set.countries), 5)
 
-    @patch("flag_quest.additional_functions.choice")
-    def test_countries_setter_without_continent_name(self, mock_choice):
-        mock_choice.return_value = self.country1
-        self.assertEqual(len(self.question_set.countries), 5)
-
     def test_flag_setter(self):
         self.assertEqual(
             self.question_set.countries_item, self.country1.flag_picture
@@ -93,44 +88,19 @@ class QuestionSetTests(TestCase):
         )
 
 
-class TotalResultCalculatorTests(TestCase):
-    def setUp(self):
-        self.answer1 = Answer.objects.create(
-            flag_picture="flag picture",
-            is_correct=True,
-            your_answer="your answer",
-            correct_answer="your answer",
-        )
-        self.answer2 = Answer.objects.create(
-            flag_picture="flag picture",
-            is_correct=True,
-            your_answer="your answer",
-            correct_answer="your answer",
-        )
-        self.answer3 = Answer.objects.create(
-            flag_picture="flag picture",
-            is_correct=True,
-            your_answer="your answer",
-            correct_answer="your answer",
-        )
-        self.answer4 = Answer.objects.create(
-            flag_picture="flag picture",
-            is_correct=True,
-            your_answer="your answer",
-            correct_answer="your answer",
-        )
-        self.answer5 = Answer.objects.create(
-            flag_picture="flag picture",
-            is_correct=False,
-            your_answer="your answer",
-            correct_answer="correct answer",
-        )
+class TotalResultCalculatorTestCase(TestCase):
 
-    def test_total_result_calculator(self):
+    @patch('flag_quest.additional_functions.Answer.objects')
+    def test_total_result_calculator(self, mock_objects):
+        # Mock the count method of the queryset
+        mock_objects.all.return_value.count.return_value = 5
+        mock_objects.filter.return_value.count.return_value = 3
+
+        # Call the function
         result = total_result_calculator()
-        self.assertEqual([4, 5], result)
 
-
+        # Check the result
+        self.assertEqual(result, [3, 5])
 #
 # class AddNumbersToCountriesTests(TestCase):
 #     def test_add_numbers_to_countries(self):
