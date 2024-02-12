@@ -52,5 +52,6 @@ class TestViewsTemplates(TestCase):
         response = self.client.get(
             reverse("country_details", kwargs={"country": "test_country"})
         )
-        self.assertEqual(response.template_name[0],
-                         "flag_quest/country_details.html")
+        self.assertEqual(
+            response.template_name[0], "flag_quest/country_details.html"
+        )

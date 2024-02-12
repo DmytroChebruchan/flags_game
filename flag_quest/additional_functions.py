@@ -1,5 +1,4 @@
 import random
-from random import choice
 from typing import List, Optional, Tuple
 
 from django.db.models import QuerySet
@@ -13,8 +12,9 @@ def get_shuffled_list(input_list):
 
 def avail_countries_generator(continent_name):
     if continent_name == "All Continents":
-        countries_on_continent = CountryInfo.objects.all().values_list("name",
-                                                                       flat=True)
+        countries_on_continent = CountryInfo.objects.all().values_list(
+            "name", flat=True
+        )
     else:
         countries_on_continent = CountryInfo.objects.filter(
             continent_1=Continent.objects.get(name=continent_name)
@@ -30,8 +30,11 @@ def continent_getter(continent_name):
     if continent_name and continent_name != "All Continents":
         continent_object = Continent.objects.get(name=continent_name)
     else:
-        continent_object = Continent.objects.exclude(
-            name="All Continents").order_by('?').first()
+        continent_object = (
+            Continent.objects.exclude(name="All Continents")
+            .order_by("?")
+            .first()
+        )
     return continent_object
 
 
@@ -44,7 +47,7 @@ class QuestionSet:
     countries_item: str
 
     def __init__(
-            self, continent_name: Optional[str] = None, set_flag: bool = False
+        self, continent_name: Optional[str] = None, set_flag: bool = False
     ):
         self.continent_name = continent_name
         self.countries_setter(continent_name)
@@ -61,9 +64,9 @@ class QuestionSet:
         )
 
     def countries_setter(self, continent_name: str = None):
-        filtered_countries = avail_countries_generator(continent_name if
-                                                       continent_name else
-                                                       "All Continents")
+        filtered_countries = avail_countries_generator(
+            continent_name if continent_name else "All Continents"
+        )
 
         if not filtered_countries:
             self.countries = CountryInfo.objects.none()

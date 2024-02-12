@@ -1,14 +1,13 @@
 from unittest.mock import patch
 
 import django
-from django.http import Http404
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import reverse
 
+from flag_quest.constants import CONTINENTS
 from flag_quest.forms import AnswerForm
 from flag_quest.models import Answer, Continent, CountryInfo
-from flag_quest.tests.additional_functions import dummy_answers_creator
-from flag_quest.views import CountryDetailsView, GamePage
+from flag_quest.views import GameMenuView, GamePage
 
 django.setup()
 
@@ -104,3 +103,10 @@ class TestGamePage(TestCase):
         saved_answer = Answer.objects.first()
         self.assertEqual(saved_answer.correct_answer, country_info.name)
         self.assertTrue(saved_answer.is_correct)
+
+    def test_get_context_data_method(self):
+        view = GameMenuView()
+        context = view.get_context_data()
+
+        self.assertIn("continents", context)
+        self.assertEqual(context["continents"], CONTINENTS)
