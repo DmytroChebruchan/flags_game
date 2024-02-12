@@ -1,6 +1,3 @@
-import os
-from unittest.mock import patch
-
 import django
 
 django.setup()
@@ -9,7 +6,8 @@ from unittest.mock import patch
 
 from django.test import TestCase
 
-from flag_quest.additional_functions import QuestionSet, total_result_calculator
+from flag_quest.additional_functions import (QuestionSet,
+                                             total_result_calculator)
 from flag_quest.models import Answer, Continent, CountryInfo
 
 
@@ -76,7 +74,6 @@ class QuestionSetTests(TestCase):
         self.assertEqual(len(self.question_set.countries), 5)
 
     def test_flag_setter(self):
-        question_set = QuestionSet(set_flag=True)
         self.assertEqual(
             self.question_set.countries_item, self.country1.flag_picture
         )
@@ -133,7 +130,6 @@ class TotalResultCalculatorTests(TestCase):
     def test_total_result_calculator(self):
         result = total_result_calculator()
         self.assertEqual([4, 5], result)
-
 
 #
 # class AddNumbersToCountriesTests(TestCase):
