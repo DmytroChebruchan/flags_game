@@ -1,6 +1,7 @@
 # Flags game
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/274825b772874511e9d8/maintainability)](https://codeclimate.com/github/DmitriyChebruchan/flags_game/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/274825b772874511e9d8/test_coverage)](https://codeclimate.com/github/DmitriyChebruchan/flags_game/test_coverage)
 
 Game to check if you know flags of different countries.
 
